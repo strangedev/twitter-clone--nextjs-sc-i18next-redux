@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "es/browser"
+  ],
+  "ignorePatterns": [
+    "next-env.d.ts",
+    "next.config.js"
+  ]
+}
