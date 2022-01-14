@@ -71,4 +71,13 @@ Set up typings for the store, see [`./app/store/typings.ts`](./app/store/typings
 
 ### styled-components
 
+Install the dependencies:
+```shell
+npm i styled-components @types/styled-components
+```
+
+_Note_: There is a TypeScript rewrite of styled-components underway, keep an eye out for that, you might not need the types in the future. 
+
+Add [`./pages/_document.tsx`](./pages/_document.tsx) to enable SSR. 
+
 ### i18next
