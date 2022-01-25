@@ -1,4 +1,4 @@
-type WithComponentTheme<TComponentTheme, TProps> = {
+type WithComponentTheme<TComponentTheme, TProps = unknown> = {
   componentTheme: TComponentTheme;
 } & TProps;
 

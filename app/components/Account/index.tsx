@@ -1,58 +1,43 @@
-import { ComponentThemeFactory } from 'react-component-theming';
-import styled from 'styled-components';
 import { Account as AccountModel } from '../../domainModel/Account';
-import React, { FunctionComponent, ReactElement } from 'react';
-import { WithComponentTheme } from '../../styling/helpers/WithComponentTheme';
+import { ComponentFactoryArgs } from '../../styling/helpers/ComponentFactoryArgs';
+import { InferComponentThemeOf } from '../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../styling/Settings';
+import styled from 'styled-components';
 import { useComponentTheme } from '../../styling/settingsContext';
-import { ThemeVariant } from '../../styling/ThemeVariant';
+import { WithComponentTheme } from '../../styling/helpers/WithComponentTheme';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 interface AccountProps {
   account?: AccountModel;
 }
 
-interface ComponentTheme {
-  infoCard: {
-    border: {
-      width: string;
-      radius: string;
-      color: string;
-    };
-    padding: string;
-    handle: {
-      textSize: string;
-      textColor: string;
-    };
-    bio: {
-      textSize: string;
-      textColor: string;
-    };
-  };
-}
-
-const componentThemeFactory: ComponentThemeFactory<Settings, ThemeVariant, ComponentTheme> =
-  function ({ settings }): ComponentTheme {
+const componentThemeFactory =
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  function ({ settings }: ComponentFactoryArgs<Settings>) {
     return {
       infoCard: {
         border: {
           width: '1px',
-          radius: settings.size(0.5),
+          radius: settings.borderRadius,
           color: settings.brandColor
         },
-        padding: settings.size(1),
+        padding: settings.size(0.5),
         handle: {
           textSize: settings.textSizes.headline,
           textColor: settings.brandColor
         },
         bio: {
           textSize: settings.textSizes.content,
-          textColor: settings.textColor
+          textColor: settings.textColor,
+          paddingTop: settings.size(0.5)
         }
       }
     };
   };
 
-const InfoCard = styled.div<WithComponentTheme<ComponentTheme, unknown>>`
+type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
+
+const InfoCard = styled.div<WithComponentTheme<ComponentTheme>>`
   border-radius: ${({ componentTheme }): string => componentTheme.infoCard.border.radius};
   border-color: ${({ componentTheme }): string => componentTheme.infoCard.border.color};
   border-style: solid;
@@ -60,14 +45,15 @@ const InfoCard = styled.div<WithComponentTheme<ComponentTheme, unknown>>`
   padding: ${({ componentTheme }): string => componentTheme.infoCard.padding};
 `;
 
-const Handle = styled.div<WithComponentTheme<ComponentTheme, unknown>>`
+const Handle = styled.div<WithComponentTheme<ComponentTheme>>`
   font-size: ${({ componentTheme }): string => componentTheme.infoCard.handle.textSize};
   color: ${({ componentTheme }): string => componentTheme.infoCard.handle.textColor};
 `;
 
-const Bio = styled.div<WithComponentTheme<ComponentTheme, unknown>>`
+const Bio = styled.div<WithComponentTheme<ComponentTheme>>`
   font-size: ${({ componentTheme }): string => componentTheme.infoCard.bio.textSize};
   color: ${({ componentTheme }): string => componentTheme.infoCard.bio.textColor};
+  padding-top: ${({ componentTheme }): string => componentTheme.infoCard.bio.paddingTop};
 `;
 
 const Account: FunctionComponent<AccountProps> = function ({ account }): ReactElement {

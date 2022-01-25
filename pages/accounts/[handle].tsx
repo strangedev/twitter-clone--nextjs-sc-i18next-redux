@@ -1,4 +1,5 @@
 import { Account } from '../../app/components/Account';
+import { VerticalSpace } from '../../app/components/layout/VerticalSpace';
 import { Account as AccountModel } from '../../app/domainModel/Account';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
@@ -6,11 +7,12 @@ import { BaseLayout } from '../../app/components/layout/BaseLayout';
 import { getAccount } from '../../app/store/actions/accounts/getAccount';
 import { getAccountsTweets } from '../../app/store/actions/tweets/getAccountsTweets';
 import { getClient } from '../../app/api/client/getClient';
+import { Headline } from '../../app/components/typography/Headline';
 import { Tweet } from '../../app/components/Tweet';
 import { Tweet as TweetModel } from '../../app/domainModel/Tweet';
+import { TweetsState } from '../../app/store/slices/tweetsSlice';
 import { useRouter } from 'next/router';
 import React, { Fragment, FunctionComponent, ReactElement, useEffect } from 'react';
-import { TweetsState } from '../../app/store/slices/tweetsSlice';
 import { useAppDispatch, useAppSelector } from '../../app/store/typing';
 
 const AccountPage: FunctionComponent = function (): ReactElement {
@@ -60,7 +62,18 @@ const AccountPage: FunctionComponent = function (): ReactElement {
       body={
         <Fragment>
           <Account account={ account } />
-          { tweets?.map((tweet): ReactElement => <Tweet tweet={ tweet } key={ tweet.publishedAt } />) }
+
+          <Headline>Twööts</Headline>
+
+          {
+            tweets?.map(
+              (tweet): ReactElement => (
+                <VerticalSpace key={ tweet.publishedAt }>
+                  <Tweet tweet={ tweet } />
+                </VerticalSpace>
+              )
+            )
+          }
         </Fragment>
       }
     />

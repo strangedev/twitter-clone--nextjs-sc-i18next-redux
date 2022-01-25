@@ -7,6 +7,7 @@ interface Settings {
     content: string;
     finePrint: string;
   };
+  borderRadius: string;
   backgroundColor: string;
   brandColor: string;
 }

@@ -1,27 +1,14 @@
-import { ComponentThemeFactory } from 'react-component-theming';
-import { Settings } from '../../styling/Settings';
+import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
+import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
+import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
-import { ThemeVariant } from '../../styling/ThemeVariant';
-import { useComponentTheme } from '../../styling/settingsContext';
-import { WithComponentTheme } from '../../styling/helpers/WithComponentTheme';
+import { useComponentTheme } from '../../../styling/settingsContext';
+import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
 import React, { Fragment, FunctionComponent, ReactElement } from 'react';
 
-interface ComponentTheme {
-  topBar: {
-    height: string;
-    textColor: string;
-    textSize: string;
-    backgroundColor: string;
-    horizontalPadding: string;
-  };
-  body: {
-    marginTop: string;
-    horizontalMargin: string;
-  };
-}
-
-const componentThemeFactory: ComponentThemeFactory<Settings, ThemeVariant, ComponentTheme> =
-  function ({ settings }): ComponentTheme {
+const componentThemeFactory =
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  function ({ settings }: ComponentFactoryArgs<Settings>) {
     return {
       topBar: {
         height: settings.size(2),
@@ -37,7 +24,9 @@ const componentThemeFactory: ComponentThemeFactory<Settings, ThemeVariant, Compo
     };
   };
 
-const TopBar = styled.nav<WithComponentTheme<ComponentTheme, unknown>>`
+type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
+
+const TopBar = styled.nav<WithComponentTheme<ComponentTheme>>`
   position: fixed;
   top: 0;
   width: 100%;
@@ -49,7 +38,7 @@ const TopBar = styled.nav<WithComponentTheme<ComponentTheme, unknown>>`
   padding-right: ${({ componentTheme }): string => componentTheme.topBar.horizontalPadding};
 `;
 
-const Body = styled.div<WithComponentTheme<ComponentTheme, unknown>>`
+const Body = styled.div<WithComponentTheme<ComponentTheme>>`
   margin-top: ${({ componentTheme }): string => componentTheme.body.marginTop};
   margin-left: ${({ componentTheme }): string => componentTheme.body.horizontalMargin};
   margin-right: ${({ componentTheme }): string => componentTheme.body.horizontalMargin};
