@@ -80,4 +80,23 @@ _Note_: There is a TypeScript rewrite of styled-components underway, keep an eye
 
 Add [`./pages/_document.tsx`](./pages/_document.tsx) to enable SSR. 
 
+
+### styled-reset
+
+Install the dependencies:
+```shell
+npm i styled-reset
+```
+
+### react-component-theming
+
+Install the dependencies:
+```shell
+npm i react-component-theming
+```
+
+### Configuring global styles
+
+Global styles add the CSS reset and font faces.
+
 ### i18next

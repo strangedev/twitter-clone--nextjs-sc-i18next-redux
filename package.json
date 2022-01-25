@@ -19,15 +19,24 @@
     "defekt": "8.0.0",
     "next": "12.0.8",
     "react": "17.0.2",
+    "react-component-theming": "1.1.0",
     "react-dom": "17.0.2",
     "react-redux": "7.2.6",
     "styled-components": "5.3.3",
+    "styled-reset": "4.3.4",
     "validate-value": "9.1.7"
   },
   "devDependencies": {
+    "@babel/core": "7.16.12",
+    "@storybook/addon-actions": "6.4.14",
+    "@storybook/addon-essentials": "6.4.14",
+    "@storybook/addon-links": "6.4.14",
+    "@storybook/react": "6.4.14",
     "@types/react": "17.0.38",
+    "babel-loader": "8.2.3",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.8",
+    "eslint-plugin-storybook": "0.5.6",
     "roboter": "12.6.1",
     "typescript": "4.5.4"
   },
@@ -35,7 +44,9 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
