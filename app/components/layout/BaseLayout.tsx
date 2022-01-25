@@ -3,6 +3,7 @@ import { Settings } from '../../styling/Settings';
 import styled from 'styled-components';
 import { ThemeVariant } from '../../styling/ThemeVariant';
 import { useComponentTheme } from '../../styling/settingsContext';
+import { WithComponentTheme } from '../../styling/helpers/WithComponentTheme';
 import React, { Fragment, FunctionComponent, ReactElement } from 'react';
 
 interface ComponentTheme {
@@ -25,7 +26,7 @@ const componentThemeFactory: ComponentThemeFactory<Settings, ThemeVariant, Compo
       topBar: {
         height: settings.size(2),
         textColor: settings.textColor,
-        textSize: settings.textSizes.headline,
+        textSize: settings.textSizes.title,
         backgroundColor: settings.brandColor,
         horizontalPadding: settings.size(0.5)
       },
@@ -35,10 +36,6 @@ const componentThemeFactory: ComponentThemeFactory<Settings, ThemeVariant, Compo
       }
     };
   };
-
-type WithComponentTheme<TComponentTheme, TProps> = {
-  componentTheme: TComponentTheme;
-} & TProps;
 
 const TopBar = styled.nav<WithComponentTheme<ComponentTheme, unknown>>`
   position: fixed;

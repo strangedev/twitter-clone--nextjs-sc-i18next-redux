@@ -11,8 +11,9 @@ const settingsCollection: SettingsCollection<Settings, ThemeVariant> = {
     size,
     textColor: '#000',
     textSizes: {
-      headline: size(2),
-      content: size(1),
+      title: size(2),
+      headline: size(1.3),
+      content: size(0.66),
       finePrint: size(0.5)
     },
     backgroundColor: '#fff',
@@ -22,8 +23,9 @@ const settingsCollection: SettingsCollection<Settings, ThemeVariant> = {
     size,
     textColor: '#ccc',
     textSizes: {
-      headline: size(2),
-      content: size(1),
+      title: size(2),
+      headline: size(1.3),
+      content: size(0.66),
       finePrint: size(0.5)
     },
     backgroundColor: '#1e1e1e',
