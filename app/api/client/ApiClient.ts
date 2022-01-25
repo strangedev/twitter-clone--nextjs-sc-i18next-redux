@@ -1,15 +1,14 @@
-import { Account } from '../../domainModel/Account';
-import { GetAccountError } from './routes/accounts/getAccount';
-import { GetEveryonesTweetsError } from './routes/tweets/getEveryonesTweets';
-import { RequestExecutor } from './RequestExecutor';
-import { Tweet } from '../../domainModel/Tweet';
+import { getAccount } from './routes/accounts/getAccount';
+import { getAccountsTweets } from './routes/tweets/getAccountsTweets';
+import { getEveryonesTweets } from './routes/tweets/getEveryonesTweets';
 
 interface ApiClient {
   accounts: {
-    getAccount: RequestExecutor<Pick<Account, 'handle'>, Account, GetAccountError>;
+    getAccount: ReturnType<typeof getAccount>;
   };
   tweets: {
-    getEveryonesTweets: RequestExecutor<undefined, Tweet[], GetEveryonesTweetsError>;
+    getEveryonesTweets: ReturnType<typeof getEveryonesTweets>;
+    getAccountsTweets: ReturnType<typeof getAccountsTweets>;
   };
 }
 

@@ -2,7 +2,7 @@ import { Account } from './Account';
 
 interface Tweet {
   text: string;
-  publishedAt: Date;
+  publishedAt: string;
   account: Account;
 }
 
