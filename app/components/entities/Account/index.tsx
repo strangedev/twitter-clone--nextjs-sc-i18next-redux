@@ -18,7 +18,7 @@ const componentThemeFactory =
     return {
       infoCard: {
         border: {
-          width: '1px',
+          width: settings.borderSize,
           radius: settings.borderRadius,
           color: settings.brandColor
         },

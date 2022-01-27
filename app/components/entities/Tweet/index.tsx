@@ -17,7 +17,7 @@ const componentThemeFactory =
         border: {
           radius: settings.borderRadius,
           color: settings.brandColor,
-          width: '1px'
+          width: settings.borderSize
         },
         padding: settings.size(0.4)
       },
@@ -42,7 +42,7 @@ const componentThemeFactory =
           border: {
             radius: settings.borderRadius,
             color: settings.brandColor,
-            width: '1px'
+            width: settings.borderSize
           },
           padding: settings.size(0.4)
         },

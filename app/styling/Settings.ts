@@ -8,8 +8,12 @@ interface Settings {
     finePrint: string;
   };
   borderRadius: string;
+  borderSize: string;
   backgroundColor: string;
   brandColor: string;
+  transition: {
+    delay: string;
+  };
 }
 
 export type {

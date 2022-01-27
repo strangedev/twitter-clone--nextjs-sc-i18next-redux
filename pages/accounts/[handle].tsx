@@ -3,6 +3,7 @@ import { Account as AccountModel } from '../../app/domainModel/Account';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
 import { BaseLayout } from '../../app/components/layout/BaseLayout';
+import { FloatingTweetPublisher } from '../../app/components/interactions/publishTweet/smartComponent/FloatingTweetPublisher';
 import { getAccount } from '../../app/store/actions/accounts/getAccount';
 import { getAccountsTweets } from '../../app/store/actions/tweets/getAccountsTweets';
 import { getClient } from '../../app/api/client/getClient';
@@ -41,6 +42,7 @@ const AccountPage: FunctionComponent = function (): ReactElement {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     dispatch(getAccount({ apiClient, parameters: { handle }}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ dispatch, account, handle ]);
 
   useEffect((): void => {
@@ -50,6 +52,7 @@ const AccountPage: FunctionComponent = function (): ReactElement {
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     dispatch(getAccountsTweets({ apiClient, parameters: { handle }}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ dispatch, tweets, handle ]);
 
   return (
@@ -74,6 +77,8 @@ const AccountPage: FunctionComponent = function (): ReactElement {
               )
             )
           }
+
+          <FloatingTweetPublisher />
         </Fragment>
       }
     />

@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   ${dosisFontFace}
   
+  * {
+    box-sizing: border-box;
+  }
+  
   body {
     font-family: 'Dosis', sans-serif;
   }

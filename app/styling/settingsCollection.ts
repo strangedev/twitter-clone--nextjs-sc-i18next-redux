@@ -17,8 +17,12 @@ const settingsCollection: SettingsCollection<Settings, ThemeVariant> = {
       finePrint: size(0.4)
     },
     borderRadius: size(0.2),
+    borderSize: '1px',
     backgroundColor: '#fff',
-    brandColor: 'hotpink'
+    brandColor: 'hotpink',
+    transition: {
+      delay: '0.3s'
+    }
   },
   dark: {
     size,
@@ -30,8 +34,12 @@ const settingsCollection: SettingsCollection<Settings, ThemeVariant> = {
       finePrint: size(0.2)
     },
     borderRadius: size(0.2),
+    borderSize: '1px',
     backgroundColor: '#1e1e1e',
-    brandColor: 'hotpink'
+    brandColor: 'hotpink',
+    transition: {
+      delay: '0.3s'
+    }
   }
 };
 
