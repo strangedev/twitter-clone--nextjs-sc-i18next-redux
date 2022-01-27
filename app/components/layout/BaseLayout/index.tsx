@@ -13,7 +13,7 @@ const componentThemeFactory =
     return {
       topBar: {
         height: settings.size(2),
-        textColor: settings.textColor,
+        textColor: settings.backgroundColor,
         textSize: settings.textSizes.title,
         backgroundColor: settings.brandColor,
         horizontalPadding: settings.size(0.5)
