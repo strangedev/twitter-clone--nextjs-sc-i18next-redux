@@ -1,14 +1,14 @@
-import { getAccount } from './routes/accounts/getAccount';
-import { getAccountsTweets } from './routes/tweets/getAccountsTweets';
-import { getEveryonesTweets } from './routes/tweets/getEveryonesTweets';
+import { getAccountQuery } from './routes/accounts/getAccounts/getAccountQuery';
+import { getAccountsTweetsQuery } from './routes/tweets/getAccountsTweetsQuery/getAccountsTweetsQuery';
+import { getEveryonesTweetsQuery } from './routes/tweets/getEveryonesTweetsQuery/getEveryonesTweetsQuery';
 
 interface ApiClient {
   accounts: {
-    getAccount: ReturnType<typeof getAccount>;
+    getAccount: ReturnType<typeof getAccountQuery>;
   };
   tweets: {
-    getEveryonesTweets: ReturnType<typeof getEveryonesTweets>;
-    getAccountsTweets: ReturnType<typeof getAccountsTweets>;
+    getEveryonesTweets: ReturnType<typeof getEveryonesTweetsQuery>;
+    getAccountsTweets: ReturnType<typeof getAccountsTweetsQuery>;
   };
 }
 

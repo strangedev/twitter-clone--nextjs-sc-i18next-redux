@@ -1,4 +1,4 @@
-import { Account } from '../../../domainModel/Account';
+import { Account } from '../../../../../domainModel/Account';
 import { Parser } from 'validate-value';
 
 const getAccountResponseSchema = new Parser<Account>({

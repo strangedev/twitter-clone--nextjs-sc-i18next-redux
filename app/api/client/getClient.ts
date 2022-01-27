@@ -1,17 +1,17 @@
 import { ApiClient } from './ApiClient';
 import { FetchClient } from './FetchClient';
-import { getAccount } from './routes/accounts/getAccount';
-import { getAccountsTweets } from './routes/tweets/getAccountsTweets';
-import { getEveryonesTweets } from './routes/tweets/getEveryonesTweets';
+import { getAccountQuery } from './calls/accounts/getAccountQuery/getAccountQuery';
+import { getAccountsTweetsQuery } from './calls/tweets/getAccountsTweetsQuery/getAccountsTweetsQuery';
+import { getEveryonesTweetsQuery } from './calls/tweets/getEveryonesTweetsQuery/getEveryonesTweetsQuery';
 
 const getClient = function (fetchClient: FetchClient): ApiClient {
   return {
     accounts: {
-      getAccount: getAccount(fetchClient)
+      getAccount: getAccountQuery(fetchClient)
     },
     tweets: {
-      getEveryonesTweets: getEveryonesTweets(fetchClient),
-      getAccountsTweets: getAccountsTweets(fetchClient)
+      getEveryonesTweets: getEveryonesTweetsQuery(fetchClient),
+      getAccountsTweets: getAccountsTweetsQuery(fetchClient)
     }
   };
 };

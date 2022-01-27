@@ -1,10 +1,11 @@
-import { Account as AccountModel } from '../../domainModel/Account';
-import { ComponentFactoryArgs } from '../../styling/helpers/ComponentFactoryArgs';
-import { InferComponentThemeOf } from '../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../styling/Settings';
+import { Account as AccountModel } from '../../../domainModel/Account';
+import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
+import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
+import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
+import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../styling/settingsContext';
-import { WithComponentTheme } from '../../styling/helpers/WithComponentTheme';
+import { useComponentTheme } from '../../../styling/settingsContext';
+import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface AccountProps {
@@ -36,24 +37,25 @@ const componentThemeFactory =
   };
 
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
+const lookup = getThemeLookupFunction<ComponentTheme>();
 
 const InfoCard = styled.div<WithComponentTheme<ComponentTheme>>`
-  border-radius: ${({ componentTheme }): string => componentTheme.infoCard.border.radius};
-  border-color: ${({ componentTheme }): string => componentTheme.infoCard.border.color};
+  border-radius: ${lookup('infoCard.border.radius')};
+  border-color: ${lookup('infoCard.border.color')};
   border-style: solid;
-  border-width: ${({ componentTheme }): string => componentTheme.infoCard.border.width};
-  padding: ${({ componentTheme }): string => componentTheme.infoCard.padding};
+  border-width: ${lookup('infoCard.border.width')};
+  padding: ${lookup('infoCard.padding')};
 `;
 
 const Handle = styled.div<WithComponentTheme<ComponentTheme>>`
-  font-size: ${({ componentTheme }): string => componentTheme.infoCard.handle.textSize};
-  color: ${({ componentTheme }): string => componentTheme.infoCard.handle.textColor};
+  font-size: ${lookup('infoCard.handle.textSize')};
+  color: ${lookup('infoCard.handle.textColor')};
 `;
 
 const Bio = styled.div<WithComponentTheme<ComponentTheme>>`
-  font-size: ${({ componentTheme }): string => componentTheme.infoCard.bio.textSize};
-  color: ${({ componentTheme }): string => componentTheme.infoCard.bio.textColor};
-  padding-top: ${({ componentTheme }): string => componentTheme.infoCard.bio.paddingTop};
+  font-size: ${lookup('infoCard.bio.textSize')};
+  color: ${lookup('infoCard.bio.textColor')};
+  padding-top: ${lookup('infoCard.bio.paddingTop')};
 `;
 
 const Account: FunctionComponent<AccountProps> = function ({ account }): ReactElement {

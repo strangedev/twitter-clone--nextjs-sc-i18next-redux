@@ -1,5 +1,4 @@
-import { Account } from '../../app/components/Account';
-import { VerticalSpace } from '../../app/components/layout/VerticalSpace';
+import { Account } from '../../app/components/entities/Account';
 import { Account as AccountModel } from '../../app/domainModel/Account';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
@@ -8,10 +7,11 @@ import { getAccount } from '../../app/store/actions/accounts/getAccount';
 import { getAccountsTweets } from '../../app/store/actions/tweets/getAccountsTweets';
 import { getClient } from '../../app/api/client/getClient';
 import { Headline } from '../../app/components/typography/Headline';
-import { Tweet } from '../../app/components/Tweet';
+import { Tweet } from '../../app/components/entities/Tweet';
 import { Tweet as TweetModel } from '../../app/domainModel/Tweet';
 import { TweetsState } from '../../app/store/slices/tweetsSlice';
 import { useRouter } from 'next/router';
+import { VerticalSpace } from '../../app/components/layout/VerticalSpace';
 import React, { Fragment, FunctionComponent, ReactElement, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/store/typing';
 

@@ -1,4 +1,5 @@
 import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
+import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
@@ -17,12 +18,13 @@ const componentThemeFactory =
   };
 
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
+const lookup = getThemeLookupFunction<ComponentTheme>();
 
 const Text = styled.div<WithComponentTheme<ComponentTheme>>`
-  color: ${({ componentTheme }): string => componentTheme.color};
-  font-size: ${({ componentTheme }): string => componentTheme.textSize};
-  margin-top: ${({ componentTheme }): string => componentTheme.verticalMargin};
-  margin-bottom: ${({ componentTheme }): string => componentTheme.verticalMargin};
+  color: ${lookup('color')};
+  font-size: ${lookup('textSize')};
+  margin-top: ${lookup('verticalMargin')};
+  margin-bottom: ${lookup('verticalMargin')};
 `;
 
 const Headline: FunctionComponent = function ({ children }): ReactElement {

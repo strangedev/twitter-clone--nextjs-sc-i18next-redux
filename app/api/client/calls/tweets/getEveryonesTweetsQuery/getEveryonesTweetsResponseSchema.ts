@@ -1,5 +1,5 @@
 import { Parser } from 'validate-value';
-import { Tweet } from '../../../domainModel/Tweet';
+import { Tweet } from '../../../../../domainModel/Tweet';
 
 const getEveryonesTweetsResponseSchema = new Parser<Tweet[]>({
   type: 'array',
