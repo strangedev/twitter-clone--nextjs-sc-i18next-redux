@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { getClient } from '../../../../api/client/getClient';
-import { useAppDispatch } from '../../../../store/typing';
 import { LoginForm as LoginFormComponent } from '../LoginForm';
-import React, { FunctionComponent, ReactElement, useState } from 'react';
+import { SessionState } from '../../../../store/slices/sessionsSlice';
+import { startSession } from '../../../../store/actions/sessions/startSession';
+import React, { FunctionComponent, ReactElement, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../store/typing';
 
 interface LoginFormProps {
   onSuccessfulLogin: () => void;
@@ -20,6 +22,15 @@ const LoginForm: FunctionComponent<LoginFormProps> = function ({
   const [ handle, setHandle ] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
 
+  const { session, error } = useAppSelector((state): SessionState => state.sessions);
+  const errorMessage = error?.message;
+
+  useEffect((): void => {
+    if (session) {
+      onSuccessfulLogin();
+    }
+  }, [ session ]);
+
   return (
     <LoginFormComponent
       onChangeHandle={
@@ -34,9 +45,14 @@ const LoginForm: FunctionComponent<LoginFormProps> = function ({
       }
       onLogin={
         (): void => {
-          alert({ handle, password });
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          dispatch(startSession({
+            apiClient,
+            parameters: { handle, password }
+          }));
         }
       }
+      errorMessage={ errorMessage }
     />
   );
 };

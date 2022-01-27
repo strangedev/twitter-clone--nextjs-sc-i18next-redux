@@ -14,6 +14,7 @@ interface LoginFormProps {
   onChangeHandle: (handle: string) => void;
   onChangePassword: (password: string) => void;
   onLogin: () => void;
+  errorMessage?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -99,7 +100,12 @@ const FooterRight = styled.div<WithComponentTheme<ComponentTheme>>`
 `;
 
 const LoginForm: FunctionComponent<LoginFormProps> =
-  function ({ onChangeHandle, onChangePassword, onLogin }): ReactElement {
+  function ({
+    onChangeHandle,
+    onChangePassword,
+    onLogin,
+    errorMessage
+  }): ReactElement {
     const { componentTheme } = useComponentTheme(componentThemeFactory);
 
     return (
@@ -107,6 +113,11 @@ const LoginForm: FunctionComponent<LoginFormProps> =
         <Headline componentTheme={ componentTheme }>
           Login
         </Headline>
+
+        {
+          errorMessage &&
+          (<div>{ errorMessage }</div>)
+        }
 
         <Body componentTheme={ componentTheme }>
           <TextField

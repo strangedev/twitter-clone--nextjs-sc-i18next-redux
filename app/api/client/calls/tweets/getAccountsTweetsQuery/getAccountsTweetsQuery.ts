@@ -30,9 +30,6 @@ const getAccountsTweetsQuery = function (fetchClient: FetchClient): GetAccountsT
   };
 };
 
-export type {
-  GetAccountsTweetsError
-};
 export {
   getAccountsTweetsQuery
 };
