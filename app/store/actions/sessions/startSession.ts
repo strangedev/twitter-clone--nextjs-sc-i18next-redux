@@ -10,10 +10,7 @@ const startSession = createAsyncThunkForRequestExecutor<ApiClient['sessions']['s
   }, {
     rejectWithValue
   }) => {
-    const startSessionResult = await apiClient.sessions.startSession({
-      handle: parameters.handle,
-      password: parameters.password
-    });
+    const startSessionResult = await apiClient.sessions.startSession(parameters);
 
     if (startSessionResult.hasError()) {
       return rejectWithValue(startSessionResult.error);

@@ -1,5 +1,6 @@
 import { Account } from '../../domainModel/Account';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { getAccount } from '../actions/accounts/getAccount';
 
 interface AccountsState {
   accounts: Record<Account['handle'], Account>;
@@ -9,30 +10,23 @@ const initialAccountsState: AccountsState = {
   accounts: {}
 };
 
+/* eslint-disable no-param-reassign */
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState: initialAccountsState,
-  reducers: {
-    updateAccount (state, { payload }: PayloadAction<Account>): AccountsState {
-      return {
-        ...state,
-        accounts: {
-          ...state.accounts,
-          [payload.handle]: payload
-        }
-      };
-    }
+  reducers: {},
+  extraReducers (builder): void {
+    builder.
+      addCase(getAccount.fulfilled, (state, action): void => {
+        state.accounts[action.payload.handle] = action.payload;
+      });
   }
 });
-
-const {
-  updateAccount
-} = accountsSlice.actions;
+/* eslint-enable no-param-reassign */
 
 export type {
   AccountsState
 };
 export {
-  accountsSlice,
-  updateAccount
+  accountsSlice
 };

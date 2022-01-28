@@ -1,23 +1,24 @@
 import { ApiClient } from '../../../api/client/ApiClient';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RequestParameters } from '../../../api/client/RequestExecutor';
-import { updateAccount } from '../../slices/accountsSlice';
+import { createAsyncThunkForRequestExecutor } from '../createAsynkThunkForRequestExecutor';
 
-const getAccount = createAsyncThunk(
+const getAccount = createAsyncThunkForRequestExecutor<ApiClient['accounts']['getAccount']>(
   'actions/accounts/getAccount',
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async ({
     apiClient,
     parameters: {
       handle
     }
-  }: {
-    apiClient: ApiClient;
-    parameters: RequestParameters<ApiClient['accounts']['getAccount']>;
-  }, { dispatch }): Promise<void> => {
+  }, {
+    rejectWithValue
+  }) => {
     const getAccountResult = await apiClient.accounts.getAccount({ handle });
-    const account = getAccountResult.unwrapOrThrow();
 
-    dispatch(updateAccount(account));
+    if (getAccountResult.hasError()) {
+      return rejectWithValue(getAccountResult.error);
+    }
+
+    return getAccountResult.value;
   }
 );
 

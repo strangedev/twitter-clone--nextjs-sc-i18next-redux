@@ -1,6 +1,7 @@
 import { Account } from '../../domainModel/Account';
+import { createSlice } from '@reduxjs/toolkit';
+import { getAccountsTweets } from '../actions/tweets/getAccountsTweets';
 import { Tweet } from '../../domainModel/Tweet';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface TweetsState {
   tweetsByAccount: Record<Account['handle'], Tweet[] | undefined>;
@@ -12,30 +13,23 @@ const initialTweetsState: TweetsState = {
   allTweets: []
 };
 
+/* eslint-disable no-param-reassign */
 const tweetsSlice = createSlice({
   name: 'tweets',
   initialState: initialTweetsState,
-  reducers: {
-    updateTweetsByAccount (state, { payload }: PayloadAction<{ handle: Account['handle']; tweets: Tweet[] }>): TweetsState {
-      return {
-        ...state,
-        tweetsByAccount: {
-          ...state.tweetsByAccount,
-          [payload.handle]: payload.tweets
-        }
-      };
-    }
+  reducers: {},
+  extraReducers (builder): void {
+    builder.
+      addCase(getAccountsTweets.fulfilled, (state, action): void => {
+        state.tweetsByAccount[action.meta.arg.parameters.handle] = action.payload;
+      });
   }
 });
-
-const {
-  updateTweetsByAccount
-} = tweetsSlice.actions;
+/* eslint-enable no-param-reassign */
 
 export type {
   TweetsState
 };
 export {
-  tweetsSlice,
-  updateTweetsByAccount
+  tweetsSlice
 };

@@ -1,23 +1,22 @@
 import { ApiClient } from '../../../api/client/ApiClient';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RequestParameters } from '../../../api/client/RequestExecutor';
-import { updateTweetsByAccount } from '../../slices/tweetsSlice';
+import { createAsyncThunkForRequestExecutor } from '../createAsynkThunkForRequestExecutor';
 
-const getAccountsTweets = createAsyncThunk(
+const getAccountsTweets = createAsyncThunkForRequestExecutor<ApiClient['tweets']['getAccountsTweets']>(
   'actions/tweets/getAccountsTweets',
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async ({
     apiClient,
-    parameters: {
-      handle
-    }
-  }: {
-    apiClient: ApiClient;
-    parameters: RequestParameters<ApiClient['tweets']['getAccountsTweets']>;
-  }, { dispatch }): Promise<void> => {
-    const getAccountsTweetsResult = await apiClient.tweets.getAccountsTweets({ handle });
-    const tweets = getAccountsTweetsResult.unwrapOrThrow();
+    parameters
+  }, {
+    rejectWithValue
+  }) => {
+    const getAccountsTweetsResult = await apiClient.tweets.getAccountsTweets(parameters);
 
-    dispatch(updateTweetsByAccount({ handle, tweets }));
+    if (getAccountsTweetsResult.hasError()) {
+      return rejectWithValue(getAccountsTweetsResult.error);
+    }
+
+    return getAccountsTweetsResult.value;
   }
 );
 
