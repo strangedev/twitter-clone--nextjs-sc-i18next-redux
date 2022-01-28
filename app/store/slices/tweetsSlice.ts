@@ -1,17 +1,15 @@
-import { Account } from '../../domainModel/Account';
 import { createSlice } from '@reduxjs/toolkit';
 import { getAccountsTweets } from '../actions/tweets/getAccountsTweets';
 import { getEveryonesTweets } from '../actions/tweets/getEveryonesTweets';
+import { isNotByAccount } from '../../domainModel/predicates/Tweet/isNotByAccount';
 import { Tweet } from '../../domainModel/Tweet';
 
 interface TweetsState {
-  tweetsByAccount: Record<Account['handle'], Tweet[] | undefined>;
-  allTweets: Tweet[];
+  tweets: Tweet[];
 }
 
 const initialTweetsState: TweetsState = {
-  tweetsByAccount: {},
-  allTweets: []
+  tweets: []
 };
 
 /* eslint-disable no-param-reassign */
@@ -22,10 +20,15 @@ const tweetsSlice = createSlice({
   extraReducers (builder): void {
     builder.
       addCase(getAccountsTweets.fulfilled, (state, action): void => {
-        state.tweetsByAccount[action.meta.arg.parameters.handle] = action.payload;
+        const { handle } = action.meta.arg.parameters;
+
+        state.tweets = [
+          ...state.tweets.filter(isNotByAccount(handle)),
+          ...action.payload
+        ];
       }).
       addCase(getEveryonesTweets.fulfilled, (state, action): void => {
-        state.allTweets = action.payload;
+        state.tweets = action.payload;
       });
   }
 });

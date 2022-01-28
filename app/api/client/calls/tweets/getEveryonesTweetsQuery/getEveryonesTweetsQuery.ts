@@ -6,7 +6,7 @@ import { error, value } from 'defekt';
 import { ExecutorResult, RequestExecutor } from '../../../RequestExecutor';
 import { GetEveryonesTweetsError, InternalServerError, UnexpectedError } from './getEveryonesTweetsErrors';
 
-type GetEveryonesTweetsQueryExecutor = RequestExecutor<undefined, Tweet[], GetEveryonesTweetsError>;
+type GetEveryonesTweetsQueryExecutor = RequestExecutor<void, Tweet[], GetEveryonesTweetsError>;
 
 const getEveryonesTweetsQuery = function (fetchClient: FetchClient): GetEveryonesTweetsQueryExecutor {
   return async (): Promise<ExecutorResult<GetEveryonesTweetsQueryExecutor>> => {

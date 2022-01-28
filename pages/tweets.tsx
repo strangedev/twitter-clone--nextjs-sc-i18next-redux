@@ -18,7 +18,7 @@ const TweetsPage: FunctionComponent = function (): ReactElement {
   }));
 
   const dispatch = useAppDispatch();
-  const { allTweets } = useAppSelector((state): TweetsState => state.tweets);
+  const { tweets } = useAppSelector((state): TweetsState => state.tweets);
 
   useEffect((): void => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -30,10 +30,10 @@ const TweetsPage: FunctionComponent = function (): ReactElement {
       topBar={ <Navigation /> }
       body={
         <Fragment>
-          <Headline>Twööts</Headline>
+          <Headline>Recent Twööts</Headline>
 
           {
-            allTweets.map(
+            tweets.map(
               (tweet): ReactElement => (
                 <VerticalSpace key={ tweet.publishedAt }>
                   <Tweet tweet={ tweet } />

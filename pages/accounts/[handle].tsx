@@ -1,6 +1,7 @@
 import { Account } from '../../app/components/entities/Account';
 import { Navigation } from '../../app/components/interactions/navigation/smartComponent/Navigation';
 import { Account as AccountModel } from '../../app/domainModel/Account';
+import { isByAccount } from '../../app/domainModel/predicates/Tweet/isByAccount';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
 import { BaseLayout } from '../../app/components/layout/BaseLayout';
@@ -27,13 +28,13 @@ const AccountPage: FunctionComponent = function (): ReactElement {
   const { handle } = router.query;
   const dispatch = useAppDispatch();
   const { accounts } = useAppSelector((state): AccountsState => state.accounts);
-  const { tweetsByAccount } = useAppSelector((state): TweetsState => state.tweets);
+  const { tweets } = useAppSelector((state): TweetsState => state.tweets);
   let account: AccountModel | undefined;
-  let tweets: TweetModel[] | undefined;
+  let tweetsByThisAccount: TweetModel[] = [];
 
   if (typeof handle === 'string') {
     account = accounts[handle];
-    tweets = tweetsByAccount[handle];
+    tweetsByThisAccount = tweets.filter(isByAccount(handle));
   }
 
   useEffect((): void => {
@@ -47,14 +48,14 @@ const AccountPage: FunctionComponent = function (): ReactElement {
   }, [ dispatch, account, handle ]);
 
   useEffect((): void => {
-    if (tweets !== undefined || !handle || typeof handle !== 'string') {
+    if (!handle || typeof handle !== 'string') {
       return;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     dispatch(getAccountsTweets({ apiClient, parameters: { handle }}));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ dispatch, tweets, handle ]);
+  }, [ handle ]);
 
   return (
     <BaseLayout
@@ -66,7 +67,7 @@ const AccountPage: FunctionComponent = function (): ReactElement {
           <Headline>Twööts</Headline>
 
           {
-            tweets?.map(
+            tweetsByThisAccount.map(
               (tweet): ReactElement => (
                 <VerticalSpace key={ tweet.publishedAt }>
                   <Tweet tweet={ tweet } />
