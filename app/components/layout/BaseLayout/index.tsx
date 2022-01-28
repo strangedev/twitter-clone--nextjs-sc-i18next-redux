@@ -4,7 +4,7 @@ import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentTh
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import React, { Fragment, FunctionComponent, ReactElement } from 'react';
 
 const componentThemeFactory =
@@ -12,7 +12,7 @@ const componentThemeFactory =
   function ({ settings }: ComponentFactoryArgs<Settings>) {
     return {
       topBar: {
-        height: settings.size(2),
+        height: settings.size(2.5),
         textColor: settings.backgroundColor,
         textSize: settings.textSizes.title,
         backgroundColor: settings.brandColor,
@@ -28,20 +28,22 @@ const componentThemeFactory =
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const TopBar = styled.nav<WithComponentTheme<ComponentTheme>>`
+const TopBar = styled.nav<ThemedWith<ComponentTheme>>`
   position: fixed;
   top: 0;
   width: 100%;
   height: ${lookup('topBar.height')};
   background-color: ${lookup('topBar.backgroundColor')};
   color: ${lookup('topBar.textColor')};
-  font-size: ${lookup('topBar.textSize')};
   padding-left: ${lookup('topBar.horizontalPadding')};
   padding-right: ${lookup('topBar.horizontalPadding')};
   padding-right: ${lookup('topBar.height')};
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
 `;
 
-const Body = styled.div<WithComponentTheme<ComponentTheme>>`
+const Body = styled.div<ThemedWith<ComponentTheme>>`
   margin-top: ${lookup('body.marginTop')};
   margin-left: ${lookup('body.horizontalMargin')};
   margin-right: ${lookup('body.horizontalMargin')};

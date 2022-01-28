@@ -1,4 +1,5 @@
 import { Account } from '../../app/components/entities/Account';
+import { Navigation } from '../../app/components/interactions/navigation/smartComponent/Navigation';
 import { Account as AccountModel } from '../../app/domainModel/Account';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
@@ -57,11 +58,7 @@ const AccountPage: FunctionComponent = function (): ReactElement {
 
   return (
     <BaseLayout
-      topBar={
-        <div>
-          Twötter
-        </div>
-      }
+      topBar={ <Navigation /> }
       body={
         <Fragment>
           <Account account={ account } />

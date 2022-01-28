@@ -5,7 +5,7 @@ import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponen
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { PropsWithChildren, ReactElement } from 'react';
 
 interface ButtonProps<TAdditionalProps> {
@@ -44,7 +44,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const StyledButton = styled.button<WithComponentTheme<ComponentTheme>>`
+const StyledButton = styled.button<ThemedWith<ComponentTheme>>`
   padding: ${lookup('padding.vertical')} ${lookup('padding.horizontal')};
   border-style: solid;
   border-width: ${lookup('border.size')};

@@ -7,7 +7,7 @@ import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { TextField } from '../../../inputs/textfields/TextField';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface LoginFormProps {
@@ -61,7 +61,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Container = styled.div<WithComponentTheme<ComponentTheme>>`
+const Container = styled.div<ThemedWith<ComponentTheme>>`
   background-color: ${lookup('backgroundColor')};
   border: ${lookup('border.size')} solid ${lookup('border.color')};
   border-radius: ${lookup('border.radius')};
@@ -76,7 +76,7 @@ const Container = styled.div<WithComponentTheme<ComponentTheme>>`
     "footer-left footer-center footer-right";
 `;
 
-const Headline = styled.div<WithComponentTheme<ComponentTheme>>`
+const Headline = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: headline;
   background-color: ${lookup('headline.color.background')};
   color: ${lookup('headline.color.text')};
@@ -86,12 +86,12 @@ const Headline = styled.div<WithComponentTheme<ComponentTheme>>`
   font-size: ${lookup('headline.size.font')};
 `;
 
-const Body = styled.div<WithComponentTheme<ComponentTheme>>`
+const Body = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: body;
   padding: ${lookup('body.padding.vertical')} ${lookup('body.padding.horizontal')};
 `;
 
-const FooterRight = styled.div<WithComponentTheme<ComponentTheme>>`
+const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
   padding-right: ${lookup('footer.padding.horizontal')};
   grid-area: footer-right;
   display: flex;

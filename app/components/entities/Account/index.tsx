@@ -5,7 +5,7 @@ import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentTh
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface AccountProps {
@@ -39,7 +39,7 @@ const componentThemeFactory =
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const InfoCard = styled.div<WithComponentTheme<ComponentTheme>>`
+const InfoCard = styled.div<ThemedWith<ComponentTheme>>`
   border-radius: ${lookup('infoCard.border.radius')};
   border-color: ${lookup('infoCard.border.color')};
   border-style: solid;
@@ -47,12 +47,12 @@ const InfoCard = styled.div<WithComponentTheme<ComponentTheme>>`
   padding: ${lookup('infoCard.padding')};
 `;
 
-const Handle = styled.div<WithComponentTheme<ComponentTheme>>`
+const Handle = styled.div<ThemedWith<ComponentTheme>>`
   font-size: ${lookup('infoCard.handle.textSize')};
   color: ${lookup('infoCard.handle.textColor')};
 `;
 
-const Bio = styled.div<WithComponentTheme<ComponentTheme>>`
+const Bio = styled.div<ThemedWith<ComponentTheme>>`
   font-size: ${lookup('infoCard.bio.textSize')};
   color: ${lookup('infoCard.bio.textColor')};
   padding-top: ${lookup('infoCard.bio.paddingTop')};

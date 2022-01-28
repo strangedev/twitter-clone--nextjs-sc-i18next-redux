@@ -3,8 +3,8 @@ import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
+import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import { useComponentTheme } from '../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 const componentThemeFactory =
@@ -18,7 +18,7 @@ const componentThemeFactory =
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Spacer = styled.div<WithComponentTheme<ComponentTheme>>`
+const Spacer = styled.div<ThemedWith<ComponentTheme>>`
   margin-top: ${lookup('verticalMargin')};
   margin-bottom: ${lookup('verticalMargin')};
 `;

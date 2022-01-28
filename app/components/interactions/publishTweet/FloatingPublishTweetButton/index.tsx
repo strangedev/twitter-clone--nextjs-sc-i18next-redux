@@ -4,7 +4,7 @@ import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponen
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface FloatingComposeNewTweetButtonProps {
@@ -29,7 +29,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Bubble = styled.button<WithComponentTheme<ComponentTheme>>`
+const Bubble = styled.button<ThemedWith<ComponentTheme>>`
   position: absolute;
   bottom: ${lookup('position.bottom')};
   right: ${lookup('position.right')};

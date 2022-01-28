@@ -4,7 +4,7 @@ import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponen
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface TextFieldProps {
@@ -35,7 +35,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const StyledTextField = styled.input<WithComponentTheme<ComponentTheme>>`
+const StyledTextField = styled.input<ThemedWith<ComponentTheme>>`
   width: 100%;
   resize: none;
   padding: ${lookup('padding.vertical')} ${lookup('padding.horizontal')};

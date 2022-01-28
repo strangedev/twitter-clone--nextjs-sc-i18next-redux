@@ -5,7 +5,7 @@ import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponen
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { WithComponentTheme } from '../../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 import { TextArea } from '../../../inputs/textareas/TextArea';
 
@@ -63,7 +63,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Container = styled.div<WithComponentTheme<ComponentTheme>>`
+const Container = styled.div<ThemedWith<ComponentTheme>>`
   position: absolute;
   bottom: ${lookup('position.bottom')};
   right: ${lookup('position.right')};
@@ -81,7 +81,7 @@ const Container = styled.div<WithComponentTheme<ComponentTheme>>`
     "footer-left footer-center footer-right";
 `;
 
-const Headline = styled.div<WithComponentTheme<ComponentTheme>>`
+const Headline = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: headline;
   border-bottom: ${lookup('border.size')} solid ${lookup('border.color')};
   background-color: ${lookup('headline.color.background')};
@@ -92,12 +92,12 @@ const Headline = styled.div<WithComponentTheme<ComponentTheme>>`
   font-size: ${lookup('headline.size.font')};
 `;
 
-const Body = styled.div<WithComponentTheme<ComponentTheme>>`
+const Body = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: body;
   padding: ${lookup('body.padding.vertical')} ${lookup('body.padding.horizontal')};
 `;
 
-const FooterLeft = styled.div<WithComponentTheme<ComponentTheme>>`
+const FooterLeft = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: footer-left;
   padding-left: ${lookup('footer.padding.horizontal')};
   display: flex;
@@ -105,14 +105,14 @@ const FooterLeft = styled.div<WithComponentTheme<ComponentTheme>>`
   align-items: center;
 `;
 
-const FooterCenter = styled.div<WithComponentTheme<ComponentTheme>>`
+const FooterCenter = styled.div<ThemedWith<ComponentTheme>>`
   grid-area: footer-center;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const FooterRight = styled.div<WithComponentTheme<ComponentTheme>>`
+const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
   padding-right: ${lookup('footer.padding.horizontal')};
   grid-area: footer-right;
   display: flex;

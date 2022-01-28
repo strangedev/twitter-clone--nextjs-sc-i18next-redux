@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Tweet as TweetModel } from '../../../domainModel/Tweet';
 import { useComponentTheme } from '../../../styling/settingsContext';
 import { VerticalSpace } from '../../layout/VerticalSpace';
-import { WithComponentTheme } from '../../../styling/helpers/WithComponentTheme';
+import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 const componentThemeFactory =
@@ -319,7 +319,7 @@ const componentThemeFactory =
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Container = styled.div<WithComponentTheme<ComponentTheme>>`
+const Container = styled.div<ThemedWith<ComponentTheme>>`
   padding: ${lookup('container.padding')};
   border-style: solid;
   border-color: ${lookup('container.border.color')};
@@ -327,18 +327,18 @@ const Container = styled.div<WithComponentTheme<ComponentTheme>>`
   border-width: ${lookup('container.border.width')};
 `;
 
-const Handle = styled.span<WithComponentTheme<ComponentTheme>>`
+const Handle = styled.span<ThemedWith<ComponentTheme>>`
   color: ${lookup('handle.textColor')};
   font-size: ${lookup('handle.textSize')};
   margin-right: ${lookup('handle.marginRight')};
 `;
 
-const PublishingDate = styled.span<WithComponentTheme<ComponentTheme>>`
+const PublishingDate = styled.span<ThemedWith<ComponentTheme>>`
   color: ${lookup('publishingDate.textColor')};
   font-size: ${lookup('publishingDate.textSize')};
 `;
 
-const Text = styled.span<WithComponentTheme<ComponentTheme>>`
+const Text = styled.span<ThemedWith<ComponentTheme>>`
   font-size: ${lookup('text.textSize')};
   color: ${lookup('text.textColor')};
 `;
