@@ -1,5 +1,6 @@
 import { ApiClient } from '../../../api/client/ApiClient';
 import { createAsyncThunkForRequestExecutor } from '../createAsynkThunkForRequestExecutor';
+import { storeSessionInLocalStorage } from '../../adapters/localstorage/session';
 
 const startSession = createAsyncThunkForRequestExecutor<ApiClient['sessions']['startSession']>(
   'actions/sessions/startSession',
@@ -16,7 +17,11 @@ const startSession = createAsyncThunkForRequestExecutor<ApiClient['sessions']['s
       return rejectWithValue(startSessionResult.error);
     }
 
-    return startSessionResult.value;
+    const session = startSessionResult.value;
+
+    storeSessionInLocalStorage(session);
+
+    return session;
   }
 );
 

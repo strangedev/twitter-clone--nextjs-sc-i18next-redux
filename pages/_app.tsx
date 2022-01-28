@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import { GlobalStyle } from '../app/styling/GlobalStyle';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
+import { RestoreSession } from '../app/store/adapters/react/RestoreSession';
 import { SettingsProvider } from '../app/styling/settingsContext';
 import { store } from '../app/store/configureStore';
 import React, { ReactElement } from 'react';
@@ -20,6 +21,7 @@ const MyApp = function ({ Component, pageProps }: AppProps): ReactElement {
         />
       </Head>
       <GlobalStyle />
+      <RestoreSession />
       <SettingsProvider>
         <Component { ...pageProps } />
       </SettingsProvider>

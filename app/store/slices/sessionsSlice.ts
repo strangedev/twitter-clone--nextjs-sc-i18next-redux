@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { Session } from '../../domainModel/Session';
 import { startSession } from '../actions/sessions/startSession';
 import { StartSessionError } from '../../api/client/calls/sessions/startSessionCommand/startSessionErrors';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface SessionState {
   session?: Session;
@@ -14,7 +14,13 @@ const initialSessionState: SessionState = {};
 const sessionsSlice = createSlice({
   name: 'session',
   initialState: initialSessionState,
-  reducers: {},
+  reducers: {
+    restoreSession (state, action: PayloadAction<Session>): SessionState {
+      return {
+        session: action.payload
+      };
+    }
+  },
   extraReducers (builder): void {
     builder.
       addCase(startSession.fulfilled, (state, action): void => {
@@ -29,9 +35,14 @@ const sessionsSlice = createSlice({
 });
 /* eslint-enable no-param-reassign */
 
+const {
+  restoreSession
+} = sessionsSlice.actions;
+
 export type {
   SessionState
 };
 export {
+  restoreSession,
   sessionsSlice
 };
