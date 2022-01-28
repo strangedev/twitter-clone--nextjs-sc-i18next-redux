@@ -19,6 +19,9 @@ const sessionsSlice = createSlice({
       return {
         session: action.payload
       };
+    },
+    endSession (): SessionState {
+      return {};
     }
   },
   extraReducers (builder): void {
@@ -36,6 +39,7 @@ const sessionsSlice = createSlice({
 /* eslint-enable no-param-reassign */
 
 const {
+  endSession,
   restoreSession
 } = sessionsSlice.actions;
 
@@ -43,6 +47,7 @@ export type {
   SessionState
 };
 export {
+  endSession,
   restoreSession,
   sessionsSlice
 };

@@ -10,7 +10,7 @@ import React, { FunctionComponent, ReactElement } from 'react';
 
 interface LinkProps {
   text: string;
-  href: string;
+  onClick: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -39,21 +39,15 @@ const StyledLink = styled.span<ThemedWith<ComponentTheme>>`
 
 const NavigationEntry: FunctionComponent<LinkProps> = function ({
   text,
-  href
+  onClick
 }): ReactElement {
   const { componentTheme } = useComponentTheme(componentThemeFactory);
-  const router = useRouter();
 
   return (
     <StyledLink
       componentTheme={ componentTheme }
       role='link'
-      onClick={
-        (): void => {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          router.push(href);
-        }
-      }
+      onClick={ (): void => onClick() }
     >
       { text }
     </StyledLink>
