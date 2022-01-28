@@ -1,10 +1,16 @@
-import React, { Fragment, FunctionComponent, ReactElement, useState } from 'react';
 import { FloatingComposeNewTweetButton } from '../FloatingPublishTweetButton';
 import { FloatingTweetComposer } from '../FloatingTweetComposer';
+import { useAuthentication } from '../../../../api/hooks/useAuthentication';
+import React, { Fragment, FunctionComponent, ReactElement, useState } from 'react';
 
-const FloatingTweetPublisher: FunctionComponent = function (): ReactElement {
+const FloatingTweetPublisher: FunctionComponent = function (): ReactElement | null {
+  const { isAuthenticated } = useAuthentication();
   const [ draftTweet, setDraftTweet ] = useState<string>('');
   const [ isComposerOpen, setIsComposerOpen ] = useState<boolean>(false);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Fragment>

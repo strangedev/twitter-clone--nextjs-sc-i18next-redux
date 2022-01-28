@@ -2,10 +2,15 @@ import { ApiClient } from '../../api/client/ApiClient';
 import { AsyncThunk, AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs/toolkit';
 import { ExecutorError, RequestParameters, ResponseData } from '../../api/client/RequestExecutor';
 
-interface ThunkParameters<TExecutor> {
-  apiClient: ApiClient;
-  parameters: RequestParameters<TExecutor>
-}
+type ThunkParameters<TExecutor> =
+  (RequestParameters<TExecutor> extends undefined ?
+    unknown :
+    {
+      parameters: RequestParameters<TExecutor>;
+    }
+  ) & {
+    apiClient: ApiClient;
+  };
 
 const createAsyncThunkForRequestExecutor = function <
   TExecutor,
