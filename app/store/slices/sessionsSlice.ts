@@ -1,4 +1,5 @@
 import { Session } from '../../domainModel/Session';
+import { endSession } from '../actions/sessions/endSession';
 import { startSession } from '../actions/sessions/startSession';
 import { StartSessionError } from '../../api/client/calls/sessions/startSessionCommand/startSessionErrors';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -19,9 +20,6 @@ const sessionsSlice = createSlice({
       return {
         session: action.payload
       };
-    },
-    endSession (): SessionState {
-      return {};
     }
   },
   extraReducers (builder): void {
@@ -33,13 +31,15 @@ const sessionsSlice = createSlice({
       addCase(startSession.rejected, (state, action): void => {
         state.session = undefined;
         state.error = action.payload;
+      }).
+      addCase(endSession.fulfilled, (state): void => {
+        state.session = undefined;
       });
   }
 });
 /* eslint-enable no-param-reassign */
 
 const {
-  endSession,
   restoreSession
 } = sessionsSlice.actions;
 
@@ -47,7 +47,6 @@ export type {
   SessionState
 };
 export {
-  endSession,
   restoreSession,
   sessionsSlice
 };

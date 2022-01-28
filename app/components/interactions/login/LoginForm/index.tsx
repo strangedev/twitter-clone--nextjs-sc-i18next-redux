@@ -6,9 +6,10 @@ import { PasswordTextField } from '../../../inputs/textfields/PasswordTextField'
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { TextField } from '../../../inputs/textfields/TextField';
-import { useComponentTheme } from '../../../../styling/settingsContext';
 import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
-import React, { FunctionComponent, ReactElement } from 'react';
+import { useComponentTheme } from '../../../../styling/settingsContext';
+import React, { Fragment, FunctionComponent, ReactElement } from 'react';
+
 
 interface LoginFormProps {
   onChangeHandle: (handle: string) => void;
@@ -28,8 +29,7 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
     },
     textColor: settings.textColor,
     size: {
-      width: settings.size(20),
-      height: settings.size(8)
+      width: settings.size(20)
     },
     headline: {
       size: {
@@ -39,6 +39,12 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
       color: {
         background: settings.brandColor,
         text: settings.backgroundColor
+      }
+    },
+    errorMessage: {
+      textSize: settings.textSizes.content,
+      padding: {
+        top: settings.size(0.66)
       }
     },
     footer: {
@@ -61,12 +67,11 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
-const Container = styled.div<ThemedWith<ComponentTheme>>`
+const Container = styled.form<ThemedWith<ComponentTheme>>`
   background-color: ${lookup('backgroundColor')};
   border: ${lookup('border.size')} solid ${lookup('border.color')};
   border-radius: ${lookup('border.radius')};
   width: ${lookup('size.width')};
-  height: ${lookup('size.height')};
   display: grid;
   grid-template-rows: ${lookup('headline.size.height')} auto ${lookup('footer.size.height')};
   grid-template-columns: auto auto auto;
@@ -99,6 +104,14 @@ const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
   align-items: center;
 `;
 
+const ErrorMessage = styled.div<ThemedWith<ComponentTheme>>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${lookup('errorMessage.textSize')};
+  padding-top: ${lookup('errorMessage.padding.top')};
+`;
+
 const LoginForm: FunctionComponent<LoginFormProps> =
   function ({
     onChangeHandle,
@@ -113,11 +126,6 @@ const LoginForm: FunctionComponent<LoginFormProps> =
         <Headline componentTheme={ componentTheme }>
           Login
         </Headline>
-
-        {
-          errorMessage &&
-          (<div>{ errorMessage }</div>)
-        }
 
         <Body componentTheme={ componentTheme }>
           <TextField
@@ -136,6 +144,16 @@ const LoginForm: FunctionComponent<LoginFormProps> =
               }
             }
           />
+
+          {
+            errorMessage && (
+              <Fragment>
+                <ErrorMessage componentTheme={ componentTheme }>
+                  { errorMessage }
+                </ErrorMessage>
+              </Fragment>
+            )
+          }
         </Body>
 
         <FooterRight componentTheme={ componentTheme }>

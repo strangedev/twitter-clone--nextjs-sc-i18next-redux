@@ -1,5 +1,5 @@
+import { endSession } from '../../../../store/actions/sessions/endSession';
 import { Brand } from '../Brand';
-import { endSession } from '../../../../store/slices/sessionsSlice';
 import { NavigationEntry } from '../NavigationEntry';
 import { useAppDispatch } from '../../../../store/typing';
 import { useAuthentication } from '../../../../api/hooks/useAuthentication';
@@ -46,6 +46,7 @@ const Navigation: FunctionComponent = function (): ReactElement {
               text='Logout'
               onClick={
                 (): void => {
+                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
                   dispatch(endSession());
                 }
               }

@@ -38,7 +38,12 @@ const loadSessionFromLocalStorage = function (): Result<Session, ItemIsNotStored
   }
 };
 
+const deleteSessionFromLocalStorage = function (): void {
+  window.localStorage.removeItem(itemKey);
+};
+
 export {
+  deleteSessionFromLocalStorage,
   loadSessionFromLocalStorage,
   storeSessionInLocalStorage
 };
