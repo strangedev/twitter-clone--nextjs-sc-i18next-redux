@@ -12,7 +12,7 @@ const Navigation: FunctionComponent = function (): ReactElement {
   const dispatch = useAppDispatch();
 
   return (
-    <Fragment>
+    <div>
       <Brand
         text='Twötter'
         href='/tweets'
@@ -54,7 +54,7 @@ const Navigation: FunctionComponent = function (): ReactElement {
           </Fragment>
         )
       }
-    </Fragment>
+    </div>
   );
 };
 

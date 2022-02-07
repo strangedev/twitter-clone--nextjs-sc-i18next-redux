@@ -20,9 +20,9 @@ const MyApp = function ({ Component, pageProps }: AppProps): ReactElement {
           crossOrigin=''
         />
       </Head>
-      <GlobalStyle />
-      <RestoreSession />
       <SettingsProvider>
+        <GlobalStyle />
+        <RestoreSession />
         <Component { ...pageProps } />
       </SettingsProvider>
     </Provider>

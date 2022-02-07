@@ -6,17 +6,6 @@ type PathTree<TTheme> = {
 
 type Path<TTheme> = PathTree<TTheme>[keyof PathTree<TTheme>];
 
-// type Value<TObject, TPath> =
-// TObject extends Record<infer TKey, any> ?
-//     TPath extends TKey[] ?
-//       TPath extends [ any ] ?
-//         TObject[TPath[0]]
-//         : TPath extends [any, ...(infer TRest)] ?
-//           Value<TObject[TPath[0]], TRest>
-//           : never
-//       : never
-//     : never;
-
 type Dotted<TPath> =
     TPath extends [ infer THead ] ?
       THead extends string ?

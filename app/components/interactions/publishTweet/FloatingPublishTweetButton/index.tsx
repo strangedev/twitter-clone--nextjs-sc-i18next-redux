@@ -3,8 +3,8 @@ import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../../styling/settingsContext';
 import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
+import { useComponentTheme } from '../../../../styling/settingsContext';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface FloatingComposeNewTweetButtonProps {
@@ -22,6 +22,9 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
       bottom: settings.size(1),
       right: settings.size(1)
     },
+    hover: {
+      yOffset: settings.size(-0.5)
+    },
     transitionDelay: settings.transition.delay
   };
 };
@@ -30,21 +33,20 @@ type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
 const Bubble = styled.button<ThemedWith<ComponentTheme>>`
-  position: absolute;
+  position: fixed;
   bottom: ${lookup('position.bottom')};
   right: ${lookup('position.right')};
   padding: ${lookup('size')};
   shape-outside: circle();
   clip-path: circle();
   font-size: ${lookup('fontSize')};
-  color: ${lookup('backgroundColor')};
-  background-color: ${lookup('iconColor')};
+  color: ${lookup('iconColor')};
+  background-color: ${lookup('backgroundColor')};
   border: none;
   transition: all ${lookup('transitionDelay')};
   
   &:hover {
-    color: ${lookup('iconColor')};
-    background-color: ${lookup('backgroundColor')};
+    transform: translateY(${lookup('hover.yOffset')});
   }
 `;
 

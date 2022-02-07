@@ -64,7 +64,7 @@ type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 const lookup = getThemeLookupFunction<ComponentTheme>();
 
 const Container = styled.div<ThemedWith<ComponentTheme>>`
-  position: absolute;
+  position: fixed;
   bottom: ${lookup('position.bottom')};
   right: ${lookup('position.right')};
   background-color: ${lookup('backgroundColor')};
@@ -102,13 +102,6 @@ const FooterLeft = styled.div<ThemedWith<ComponentTheme>>`
   padding-left: ${lookup('footer.padding.horizontal')};
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-`;
-
-const FooterCenter = styled.div<ThemedWith<ComponentTheme>>`
-  grid-area: footer-center;
-  display: flex;
-  justify-content: center;
   align-items: center;
 `;
 

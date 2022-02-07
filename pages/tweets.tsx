@@ -4,7 +4,7 @@ import { FloatingTweetPublisher } from '../app/components/interactions/publishTw
 import { getClient } from '../app/api/client/getClient';
 import { getEveryonesTweets } from '../app/store/actions/tweets/getEveryonesTweets';
 import { Headline } from '../app/components/typography/Headline';
-import { Navigation } from '../app/components/interactions/navigation/smartComponent/Navigation';
+import { Navigation } from '../app/components/interactions/navigate/smartComponent/Navigation';
 import { Tweet } from '../app/components/entities/Tweet';
 import { TweetsState } from '../app/store/slices/tweetsSlice';
 import { VerticalSpace } from '../app/components/layout/VerticalSpace';

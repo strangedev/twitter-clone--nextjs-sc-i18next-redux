@@ -3,9 +3,10 @@ import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../styling/settingsContext';
 import { ThemedWith } from '../../../styling/helpers/ThemedWith';
+import { useComponentTheme } from '../../../styling/settingsContext';
 import React, { Fragment, FunctionComponent, ReactElement } from 'react';
+import { ThemeSwitcher } from '../../interactions/switchTheme/smartComponent/ThemeSwitcher';
 
 const componentThemeFactory =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -41,6 +42,7 @@ const TopBar = styled.nav<ThemedWith<ComponentTheme>>`
   display: flex;
   align-items: baseline;
   flex-wrap: nowrap;
+  justify-content: space-between;
 `;
 
 const Body = styled.div<ThemedWith<ComponentTheme>>`
@@ -64,8 +66,9 @@ const BaseLayout: FunctionComponent<BaseLayoutProps> = function ({
     <Fragment>
       <TopBar componentTheme={ componentTheme }>
         { topBar }
+        <ThemeSwitcher />
       </TopBar>
-      <Body componentTheme={ componentTheme}>
+      <Body componentTheme={ componentTheme }>
         { body }
       </Body>
     </Fragment>

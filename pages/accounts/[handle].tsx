@@ -1,7 +1,5 @@
 import { Account } from '../../app/components/entities/Account';
-import { Navigation } from '../../app/components/interactions/navigation/smartComponent/Navigation';
 import { Account as AccountModel } from '../../app/domainModel/Account';
-import { isByAccount } from '../../app/domainModel/predicates/Tweet/isByAccount';
 import { AccountsState } from '../../app/store/slices/accountsSlice';
 import axios from 'axios';
 import { BaseLayout } from '../../app/components/layout/BaseLayout';
@@ -10,6 +8,8 @@ import { getAccount } from '../../app/store/actions/accounts/getAccount';
 import { getAccountsTweets } from '../../app/store/actions/tweets/getAccountsTweets';
 import { getClient } from '../../app/api/client/getClient';
 import { Headline } from '../../app/components/typography/Headline';
+import { isByAccount } from '../../app/domainModel/predicates/Tweet/isByAccount';
+import { Navigation } from '../../app/components/interactions/navigate/smartComponent/Navigation';
 import { Tweet } from '../../app/components/entities/Tweet';
 import { Tweet as TweetModel } from '../../app/domainModel/Tweet';
 import { TweetsState } from '../../app/store/slices/tweetsSlice';

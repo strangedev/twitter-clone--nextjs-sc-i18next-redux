@@ -9,7 +9,7 @@ const {
   useThemingVariant
 } = initializeSettingsContext<Settings, ThemeVariant>({
   settingsCollection,
-  initialThemingVariant: 'light'
+  initialThemingVariant: 'dark'
 });
 
 export {

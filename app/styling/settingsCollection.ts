@@ -31,12 +31,12 @@ const settingsCollection: SettingsCollection<Settings, ThemeVariant> = {
       title: size(2),
       headline: size(1.3),
       content: size(0.66),
-      finePrint: size(0.2)
+      finePrint: size(0.4)
     },
-    borderRadius: size(0.2),
+    borderRadius: size(0.1),
     borderSize: '1px',
     backgroundColor: '#1e1e1e',
-    brandColor: 'hotpink',
+    brandColor: 'lightgreen',
     transition: {
       delay: '0.3s'
     }
