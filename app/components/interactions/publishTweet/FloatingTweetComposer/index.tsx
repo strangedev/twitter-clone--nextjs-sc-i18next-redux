@@ -16,7 +16,7 @@ interface FloatingTweetComposerProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     backgroundColor: settings.backgroundColor,
     border: {
@@ -26,16 +26,16 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
     },
     textColor: settings.textColor,
     position: {
-      bottom: settings.size(1),
-      right: settings.size(5)
+      bottom: settings.gap(1),
+      right: settings.gap(1)
     },
     size: {
-      width: settings.size(20),
-      height: settings.size(20)
+      width: settings.size(96),
+      height: settings.size(96)
     },
     headline: {
       size: {
-        height: settings.size(1),
+        height: settings.size(10),
         font: settings.textSizes.content
       },
       color: {
@@ -43,18 +43,10 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
         text: settings.backgroundColor
       }
     },
-    footer: {
-      size: {
-        height: settings.size(2)
-      },
+    row: {
       padding: {
-        horizontal: settings.size(0.33)
-      }
-    },
-    body: {
-      padding: {
-        horizontal: settings.size(0.33),
-        vertical: settings.size(0.33)
+        horizontal: settings.gap(1),
+        vertical: settings.gap(1)
       }
     }
   };
@@ -72,17 +64,12 @@ const Container = styled.div<ThemedWith<ComponentTheme>>`
   border-radius: ${lookup('border.radius')};
   width: ${lookup('size.width')};
   height: ${lookup('size.height')};
-  display: grid;
-  grid-template-rows: ${lookup('headline.size.height')} auto ${lookup('footer.size.height')};
-  grid-template-columns: auto auto auto;
-  grid-template-areas:
-    "headline headline headline"
-    "body body body"
-    "footer-left footer-center footer-right";
+  display: flex;
+  flex-direction: column;
 `;
 
 const Headline = styled.div<ThemedWith<ComponentTheme>>`
-  grid-area: headline;
+  height: ${lookup('headline.size.height')};
   border-bottom: ${lookup('border.size')} solid ${lookup('border.color')};
   background-color: ${lookup('headline.color.background')};
   color: ${lookup('headline.color.text')};
@@ -92,21 +79,29 @@ const Headline = styled.div<ThemedWith<ComponentTheme>>`
   font-size: ${lookup('headline.size.font')};
 `;
 
-const Body = styled.div<ThemedWith<ComponentTheme>>`
-  grid-area: body;
-  padding: ${lookup('body.padding.vertical')} ${lookup('body.padding.horizontal')};
+const Row = styled.div<ThemedWith<ComponentTheme, { expand?: boolean }>>`
+  padding: ${lookup('row.padding.vertical')} ${lookup('row.padding.horizontal')};
+  ${({ expand }): string => expand ? 'flex-grow: 2' : ''}
 `;
 
-const FooterLeft = styled.div<ThemedWith<ComponentTheme>>`
+const Footer = styled.div<ThemedWith<ComponentTheme>>`
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto;
+  grid-template-areas: 'footer-left footer-center footer-right';
+  padding-left: ${lookup('row.padding.vertical')};
+  padding-right: ${lookup('row.padding.vertical')};
+  padding-bottom: ${lookup('row.padding.horizontal')};;
+`;
+
+const FooterLeft = styled.div`
   grid-area: footer-left;
-  padding-left: ${lookup('footer.padding.horizontal')};
   display: flex;
   justify-content: flex-start;
   align-items: center;
 `;
 
-const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
-  padding-right: ${lookup('footer.padding.horizontal')};
+const FooterRight = styled.div`
   grid-area: footer-right;
   display: flex;
   justify-content: flex-end;
@@ -123,19 +118,20 @@ const FloatingTweetComposer: FunctionComponent<FloatingTweetComposerProps> =
           Compose a Twööt
         </Headline>
 
-        <Body componentTheme={ componentTheme }>
+        <Row componentTheme={ componentTheme } expand={ true }>
           <TextArea
             placeholder='Write something fun...'
             onChange={ (text): void => onChange(text) }
           />
-        </Body>
-
-        <FooterLeft componentTheme={ componentTheme }>
-          <Button label='Cancel' onClick={ (): void => onCancel() } />
-        </FooterLeft>
-        <FooterRight componentTheme={ componentTheme }>
-          <Button label='Publish' onClick={ (): void => onPublish() } />
-        </FooterRight>
+        </Row>
+        <Footer componentTheme={ componentTheme }>
+          <FooterLeft>
+            <Button label='Cancel' onClick={ (): void => onCancel() } />
+          </FooterLeft>
+          <FooterRight>
+            <Button label='Publish' onClick={ (): void => onPublish() } />
+          </FooterRight>
+        </Footer>
       </Container>
     );
   };

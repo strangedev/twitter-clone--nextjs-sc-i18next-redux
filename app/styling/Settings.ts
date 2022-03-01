@@ -1,18 +1,22 @@
-interface Settings {
-  size: (n: number) => string;
-  textColor: string;
+import { BaseSettings } from './design-system/getBaseSettings';
+import { Color } from './css-in-js/quantities/Color';
+import { Duration } from './css-in-js/quantities/Duration';
+import { Length } from './css-in-js/quantities/Length';
+
+interface Settings extends BaseSettings {
+  textColor: Color;
   textSizes: {
-    title: string;
-    headline: string;
-    content: string;
-    finePrint: string;
+    title: Length;
+    headline: Length;
+    content: Length;
+    finePrint: Length;
   };
-  borderRadius: string;
-  borderSize: string;
-  backgroundColor: string;
-  brandColor: string;
+  borderRadius: Length;
+  borderSize: Length;
+  backgroundColor: Color;
+  brandColor: Color;
   transition: {
-    delay: string;
+    delay: Duration;
   };
 }
 

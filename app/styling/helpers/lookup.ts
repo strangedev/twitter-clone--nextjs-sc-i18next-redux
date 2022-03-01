@@ -3,26 +3,26 @@ type PathTree<TTheme> = {
     [TKey] | [TKey, ...Path<TTheme[TKey]>] :
     [TKey];
 };
-
 type Path<TTheme> = PathTree<TTheme>[keyof PathTree<TTheme>];
 
 type Dotted<TPath> =
-    TPath extends [ infer THead ] ?
+  TPath extends [ infer THead ] ?
+    THead extends string ?
+      THead :
+      never :
+    TPath extends [ infer THead, ...(infer TRest) ] ?
       THead extends string ?
-        THead :
-        never :
-      TPath extends [ infer THead, ...(infer TRest) ] ?
-        THead extends string ?
-          TRest extends string[] ?
-            `${THead}.${Dotted<TRest>}` :
-            never :
+        TRest extends string[] ?
+          `${THead}.${Dotted<TRest>}` :
           never :
-        never;
+        never :
+      never;
 
 type TemplateFunction<TTheme> = (args: { componentTheme: TTheme }) => any;
-type LookupFunction<TTheme, TPath extends Path<TTheme>> = (dottedPath: Dotted<TPath>) => TemplateFunction<TTheme>;
+type LookupFunction<TTheme, TPath extends Path<TTheme>>
+  = (dottedPath: Dotted<TPath>) => TemplateFunction<TTheme>;
 
-const getThemeLookupFunction = function<TTheme> (): LookupFunction<TTheme, Path<TTheme>> {
+const getThemeLookupFunction = function<TTheme extends object> (): LookupFunction<TTheme, Path<TTheme>> {
   return <TPath extends Path<TTheme>>(path: Dotted<TPath>): TemplateFunction<TTheme> =>
     ({ componentTheme }): any => {
       let current = componentTheme;
@@ -32,7 +32,6 @@ const getThemeLookupFunction = function<TTheme> (): LookupFunction<TTheme, Path<
         current = current[property];
       }
 
-      // @ts-ignore
       return current;
     };
 };

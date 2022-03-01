@@ -6,7 +6,8 @@ import { ThemeVariant } from './ThemeVariant';
 const {
   SettingsProvider,
   useComponentTheme,
-  useThemingVariant
+  useThemingVariant,
+  useSettings
 } = initializeSettingsContext<Settings, ThemeVariant>({
   settingsCollection,
   initialThemingVariant: 'dark'
@@ -15,5 +16,6 @@ const {
 export {
   SettingsProvider,
   useComponentTheme,
+  useSettings,
   useThemingVariant
 };

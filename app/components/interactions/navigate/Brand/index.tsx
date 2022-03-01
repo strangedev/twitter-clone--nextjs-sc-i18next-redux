@@ -14,12 +14,13 @@ interface LinkProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     text: {
       size: settings.textSizes.title,
       color: settings.backgroundColor
-    }
+    },
+    rightMargin: settings.gap(1)
   };
 };
 
@@ -29,6 +30,7 @@ const lookup = getThemeLookupFunction<ComponentTheme>();
 const StyledLink = styled.span<ThemedWith<ComponentTheme>>`
   font-size: ${lookup('text.size')};
   color: ${lookup('text.color')};
+  margin-right: ${lookup('rightMargin')};
   text-decoration: none;
   cursor: pointer;
 `;

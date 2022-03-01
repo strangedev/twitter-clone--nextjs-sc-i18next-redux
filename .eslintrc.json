@@ -3,8 +3,12 @@
     "next/core-web-vitals",
     "es/browser"
   ],
+  "rules": {
+    "no-underscore-dangle": "off"
+  },
   "ignorePatterns": [
     "next-env.d.ts",
-    "next.config.js"
+    "next.config.js",
+    "next-i18next.config.js"
   ]
 }

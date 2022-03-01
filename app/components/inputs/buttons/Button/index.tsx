@@ -16,7 +16,7 @@ interface ButtonProps<TAdditionalProps> {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     border: {
       color: settings.brandColor,
@@ -35,8 +35,8 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
       }
     },
     padding: {
-      horizontal: settings.size(0.66),
-      vertical: settings.size(0.33)
+      horizontal: settings.size(1),
+      vertical: settings.size(1)
     }
   };
 };

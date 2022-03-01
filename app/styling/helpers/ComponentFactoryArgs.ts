@@ -1,5 +1,6 @@
-interface ComponentFactoryArgs<TSettings> {
+interface ComponentFactoryArgs<TSettings, TThemingVariants> {
   settings: TSettings;
+  themingVariant: TThemingVariants;
 }
 
 export type {

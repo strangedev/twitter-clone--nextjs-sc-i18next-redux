@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app';
+import { appWithTranslation } from 'next-i18next';
 import { GlobalStyle } from '../app/styling/GlobalStyle';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
@@ -29,4 +30,4 @@ const MyApp = function ({ Component, pageProps }: AppProps): ReactElement {
   );
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

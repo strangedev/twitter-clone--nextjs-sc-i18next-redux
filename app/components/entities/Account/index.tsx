@@ -14,7 +14,7 @@ interface AccountProps {
 
 const componentThemeFactory =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
+  function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
     return {
       infoCard: {
         border: {
@@ -22,7 +22,7 @@ const componentThemeFactory =
           radius: settings.borderRadius,
           color: settings.brandColor
         },
-        padding: settings.size(0.5),
+        padding: settings.gap(1),
         handle: {
           textSize: settings.textSizes.headline,
           textColor: settings.brandColor
@@ -30,7 +30,7 @@ const componentThemeFactory =
         bio: {
           textSize: settings.textSizes.content,
           textColor: settings.textColor,
-          paddingTop: settings.size(0.5)
+          paddingTop: settings.gap(1)
         }
       }
     };

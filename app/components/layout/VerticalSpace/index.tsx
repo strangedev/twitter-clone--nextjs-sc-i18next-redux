@@ -6,12 +6,13 @@ import styled from 'styled-components';
 import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import { useComponentTheme } from '../../../styling/settingsContext';
 import React, { FunctionComponent, ReactElement } from 'react';
+import { ThemeVariant } from '../../../styling/ThemeVariant';
 
 const componentThemeFactory =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
+  function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
     return {
-      verticalMargin: settings.size(0.33)
+      verticalMargin: settings.gap(1)
     };
   };
 

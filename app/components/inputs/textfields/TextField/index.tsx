@@ -13,7 +13,7 @@ interface TextFieldProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     border: {
       color: settings.brandColor,
@@ -26,8 +26,8 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
       color: settings.textColor
     },
     padding: {
-      horizontal: settings.size(0.33),
-      vertical: settings.size(0.33)
+      horizontal: settings.size(0.5),
+      vertical: settings.size(0.5)
     }
   };
 };

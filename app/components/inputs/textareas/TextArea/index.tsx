@@ -3,8 +3,9 @@ import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
 import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../../styling/settingsContext';
 import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
+import { ThemeVariant } from '../../../../styling/ThemeVariant';
+import { useComponentTheme } from '../../../../styling/settingsContext';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface TextAreaProps {
@@ -13,7 +14,7 @@ interface TextAreaProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     border: {
       color: settings.brandColor,
@@ -24,10 +25,6 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
     text: {
       size: settings.textSizes.content,
       color: settings.textColor
-    },
-    padding: {
-      horizontal: settings.size(0.33),
-      vertical: settings.size(0.33)
     }
   };
 };
@@ -39,7 +36,6 @@ const StyledTextArea = styled.textarea<ThemedWith<ComponentTheme>>`
   width: 100%;
   height: 100%;
   resize: none;
-  padding: ${lookup('padding.vertical')} ${lookup('padding.horizontal')};
   border-color: ${lookup('border.color')};
   border-width: ${lookup('border.size')};
   border-radius: ${lookup('border.radius')};

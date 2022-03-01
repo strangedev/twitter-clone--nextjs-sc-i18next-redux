@@ -6,22 +6,23 @@ import styled from 'styled-components';
 import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import { useComponentTheme } from '../../../styling/settingsContext';
 import React, { Fragment, FunctionComponent, ReactElement } from 'react';
+import { ThemeVariant } from '../../../styling/ThemeVariant';
 import { ThemeSwitcher } from '../../interactions/switchTheme/smartComponent/ThemeSwitcher';
 
 const componentThemeFactory =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
+  function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
     return {
       topBar: {
-        height: settings.size(2.5),
+        height: settings.size(14),
         textColor: settings.backgroundColor,
         textSize: settings.textSizes.title,
         backgroundColor: settings.brandColor,
-        horizontalPadding: settings.size(0.5)
+        horizontalPadding: settings.gap(1)
       },
       body: {
-        marginTop: settings.size(3),
-        horizontalMargin: settings.size(1)
+        marginTop: settings.size(14).add(settings.gap(1)),
+        horizontalMargin: settings.gap(1)
       }
     };
   };

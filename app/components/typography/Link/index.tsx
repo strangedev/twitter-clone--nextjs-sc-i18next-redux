@@ -1,9 +1,11 @@
+import { Color } from '../../../styling/css-in-js/quantities/Color';
 import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
 import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
+import { Length } from '../../../styling/css-in-js/quantities/Length';
 import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
 import { ThemedWith } from '../../../styling/helpers/ThemedWith';
+import { ThemeVariant } from '../../../styling/ThemeVariant';
 import { useComponentTheme } from '../../../styling/settingsContext';
 import React, { FunctionComponent, ReactElement } from 'react';
 
@@ -15,7 +17,7 @@ interface LinkProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     text: {
       sizes: settings.textSizes,
@@ -30,8 +32,8 @@ const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Setti
 type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
 
 const StyledLink = styled.a<ThemedWith<ComponentTheme, Pick<LinkProps, 'variant' | 'inverted'>>>`
-  font-size: ${({ componentTheme, variant }): string => componentTheme.text.sizes[variant]};
-  color: ${({ componentTheme, inverted }): string => inverted ? componentTheme.text.colors.inverted : componentTheme.text.colors.default};
+  font-size: ${({ componentTheme, variant }): Length => componentTheme.text.sizes[variant]};
+  color: ${({ componentTheme, inverted }): Color => inverted ? componentTheme.text.colors.inverted : componentTheme.text.colors.default};
 `;
 
 const Link: FunctionComponent<LinkProps> = function ({

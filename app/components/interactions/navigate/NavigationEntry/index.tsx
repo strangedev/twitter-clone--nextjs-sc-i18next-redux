@@ -5,7 +5,6 @@ import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import { useComponentTheme } from '../../../../styling/settingsContext';
-import { useRouter } from 'next/router';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface LinkProps {
@@ -14,14 +13,14 @@ interface LinkProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
+const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
   return {
     text: {
       size: settings.textSizes.headline,
       color: settings.backgroundColor
     },
     padding: {
-      horizontal: settings.size(1)
+      horizontal: settings.gap(1)
     }
   };
 };

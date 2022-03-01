@@ -9,11 +9,12 @@ import React, { FunctionComponent, ReactElement } from 'react';
 
 const componentThemeFactory =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
+  function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
     return {
       textSize: settings.textSizes.headline,
       color: settings.textColor,
-      verticalMargin: settings.size(0.5)
+      topMargin: settings.gap(2),
+      bottomMargin: settings.gap(1)
     };
   };
 
@@ -23,8 +24,8 @@ const lookup = getThemeLookupFunction<ComponentTheme>();
 const Text = styled.div<ThemedWith<ComponentTheme>>`
   color: ${lookup('color')};
   font-size: ${lookup('textSize')};
-  margin-top: ${lookup('verticalMargin')};
-  margin-bottom: ${lookup('verticalMargin')};
+  margin-top: ${lookup('topMargin')};
+  margin-bottom: ${lookup('bottomMargin')};
 `;
 
 const Headline: FunctionComponent = function ({ children }): ReactElement {
