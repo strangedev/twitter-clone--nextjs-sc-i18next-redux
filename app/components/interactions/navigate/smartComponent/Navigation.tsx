@@ -1,5 +1,5 @@
-import { endSession } from '../../../../store/actions/sessions/endSession';
 import { Brand } from '../Brand';
+import { endSession } from '../../../../store/actions/sessions/endSession';
 import { NavigationEntry } from '../NavigationEntry';
 import { useAppDispatch } from '../../../../store/typing';
 import { useAuthentication } from '../../../../api/hooks/useAuthentication';

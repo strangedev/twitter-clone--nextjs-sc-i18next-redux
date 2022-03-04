@@ -1,4 +1,4 @@
-import { Length } from '../css-in-js/quantities/Length';
+import { Length } from '@nhummel/css-in-js';
 import { SizeFunction } from './getSizeFuntion';
 
 type Gap = 1 | 2 | 4;

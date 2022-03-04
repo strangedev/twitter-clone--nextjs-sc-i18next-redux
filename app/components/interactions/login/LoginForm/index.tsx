@@ -1,19 +1,9 @@
 import { Button } from '../../../inputs/buttons/Button';
-import { ComponentFactoryArgs } from '../../../../styling/helpers/ComponentFactoryArgs';
-import { CssBuilder } from '../../../../styling/css-in-js/CssBuilder';
-import { getApplyMixin } from '../../../../styling/helpers/mixins/applyMixin';
-import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
-import { MixinArgs } from '../../../../styling/helpers/mixins/MixinArgs';
+import { createLocalTheme } from '../../../../styling/GlobalTheme';
 import { PasswordTextField } from '../../../inputs/textfields/PasswordTextField';
-import { Settings } from '../../../../styling/Settings';
 import styled from 'styled-components';
 import { TextField } from '../../../inputs/textfields/TextField';
-import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
-import { ThemeVariant } from '../../../../styling/ThemeVariant';
-import { useMixins } from '../../../../styling/helpers/mixins/useMixins';
 import React, { FunctionComponent, ReactElement } from 'react';
-import { useComponentTheme, useSettings, useThemingVariant } from '../../../../styling/settingsContext';
 
 interface LoginFormProps {
   onChangeHandle: (handle: string) => void;
@@ -22,69 +12,51 @@ interface LoginFormProps {
   errorMessage?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
-  return {
-    backgroundColor: settings.backgroundColor,
-    border: {
-      color: settings.brandColor,
-      radius: settings.borderRadius,
-      size: settings.borderSize
-    },
-    textColor: settings.textColor,
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  backgroundColor: globalTheme.backgroundColor,
+  border: {
+    color: globalTheme.brandColor,
+    radius: globalTheme.borderRadius,
+    size: globalTheme.borderSize
+  },
+  textColor: globalTheme.textColor,
+  size: {
+    width: globalTheme.size(128)
+  },
+  headline: {
     size: {
-      width: settings.size(128)
-    },
-    headline: {
-      size: {
-        height: settings.size(12)
-      }
-    },
-    errorMessage: {
-      textSize: settings.textSizes.content,
-      padding: {
-        top: settings.gap(1)
-      }
-    },
-    footer: {
-      size: {
-        height: settings.size(10)
-      },
-      padding: {
-        horizontal: settings.gap(1)
-      }
-    },
-    body: {
-      padding: {
-        horizontal: settings.gap(1),
-        vertical: settings.gap(1)
-      }
+      height: globalTheme.size(12)
     }
-  };
-};
+  },
+  errorMessage: {
+    textSize: globalTheme.textSizes.content,
+    padding: {
+      top: globalTheme.gap(1)
+    }
+  },
+  footer: {
+    size: {
+      height: globalTheme.size(10)
+    },
+    padding: {
+      horizontal: globalTheme.gap(1)
+    }
+  },
+  body: {
+    padding: {
+      horizontal: globalTheme.gap(1),
+      vertical: globalTheme.gap(1)
+    }
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const headlineMixin = ({ settings, themingVariant }: MixinArgs<Settings, ThemeVariant>): string =>
-  CssBuilder.new().
-    add('font-size', settings.textSizes.headline).
-    add('color', themingVariant === 'light' ? settings.textColor : settings.backgroundColor).
-    add('background-color', settings.brandColor).
-    toString();
-
-const applyMixin = getApplyMixin<Settings, ThemeVariant>({
-  useSettings,
-  useThemingVariant
-});
-
-const Container = styled.form<ThemedWith<ComponentTheme>>`
-  background-color: ${lookup('backgroundColor')};
-  border: ${lookup('border.size')} solid ${lookup('border.color')};
-  border-radius: ${lookup('border.radius')};
-  width: ${lookup('size.width')};
+const Container = styled.form`
+  background-color: ${from(theme => theme.backgroundColor)};
+  border: ${from(theme => theme.border.size)} solid ${from(theme => theme.border.color)};
+  border-radius: ${from(theme => theme.border.radius)};
+  width: ${from(theme => theme.size.width)};
   display: grid;
-  grid-template-rows: ${lookup('headline.size.height')} auto ${lookup('footer.size.height')};
+  grid-template-rows: ${from(theme => theme.headline.size.height)} auto ${from(theme => theme.footer.size.height)};
   grid-template-columns: auto auto auto;
   grid-template-areas:
     "headline headline headline"
@@ -92,33 +64,32 @@ const Container = styled.form<ThemedWith<ComponentTheme>>`
     "footer-left footer-center footer-right";
 `;
 
-const Headline = styled.div<ThemedWith<ComponentTheme>>`
-  ${applyMixin(headlineMixin)}
+const Headline = styled.div`
   grid-area: headline;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const Body = styled.div<ThemedWith<ComponentTheme>>`
+const Body = styled.div`
   grid-area: body;
-  padding: ${lookup('body.padding.vertical')} ${lookup('body.padding.horizontal')};
+  padding: ${from(theme => theme.body.padding.vertical)} ${from(theme => theme.body.padding.horizontal)};
 `;
 
-const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
-  padding-right: ${lookup('footer.padding.horizontal')};
+const FooterRight = styled.div`
+  padding-right: ${from(theme => theme.footer.padding.horizontal)};
   grid-area: footer-right;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 `;
 
-const ErrorMessage = styled.div<ThemedWith<ComponentTheme>>`
+const ErrorMessage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${lookup('errorMessage.textSize')};
-  padding-top: ${lookup('errorMessage.padding.top')};
+  font-size: ${from(theme => theme.errorMessage.textSize)};
+  padding-top: ${from(theme => theme.errorMessage.padding.top)};
 `;
 
 const LoginForm: FunctionComponent<LoginFormProps> =
@@ -128,19 +99,13 @@ const LoginForm: FunctionComponent<LoginFormProps> =
     onLogin,
     errorMessage
   }): ReactElement {
-    const { componentTheme } = useComponentTheme(componentThemeFactory);
-    const mixins = useMixins({ settings, themingVariant });
-
     return (
-      <Container componentTheme={ componentTheme }>
-        <Headline
-          mixins={ mixins }
-          componentTheme={ componentTheme }
-        >
+      <Container>
+        <Headline>
           Login
         </Headline>
 
-        <Body componentTheme={ componentTheme }>
+        <Body>
           <TextField
             placeholder='Handle'
             onChange={
@@ -160,14 +125,14 @@ const LoginForm: FunctionComponent<LoginFormProps> =
 
           {
             errorMessage && (
-              <ErrorMessage componentTheme={ componentTheme }>
+              <ErrorMessage>
                 { errorMessage }
               </ErrorMessage>
             )
           }
         </Body>
 
-        <FooterRight componentTheme={ componentTheme }>
+        <FooterRight>
           <Button label='Login' onClick={ (): void => onLogin() } />
         </FooterRight>
       </Container>

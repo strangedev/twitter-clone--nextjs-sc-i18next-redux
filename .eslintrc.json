@@ -4,7 +4,13 @@
     "es/browser"
   ],
   "rules": {
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowTypedFunctionExpressions": true
+      }
+    ]
   },
   "ignorePatterns": [
     "next-env.d.ts",

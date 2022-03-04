@@ -1,61 +1,44 @@
-import { Color } from '../../../styling/css-in-js/quantities/Color';
-import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
-import { Length } from '../../../styling/css-in-js/quantities/Length';
-import { Settings } from '../../../styling/Settings';
+import { createLocalTheme } from '../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { ThemedWith } from '../../../styling/helpers/ThemedWith';
-import { ThemeVariant } from '../../../styling/ThemeVariant';
-import { useComponentTheme } from '../../../styling/settingsContext';
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent } from 'react';
 
 interface LinkProps {
   text: string;
-  variant: keyof Settings['textSizes'];
+  variant: 'title' | 'headline' | 'content' | 'finePrint';
   inverted?: boolean;
   href: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings, ThemeVariant>) {
-  return {
-    text: {
-      sizes: settings.textSizes,
-      colors: {
-        default: settings.brandColor,
-        inverted: settings.backgroundColor
-      }
+const { get } = createLocalTheme(({ globalTheme }) => ({
+  text: {
+    sizes: globalTheme.textSizes,
+    colors: {
+      default: globalTheme.brandColor,
+      inverted: globalTheme.backgroundColor
     }
-  };
-};
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-
-const StyledLink = styled.a<ThemedWith<ComponentTheme, Pick<LinkProps, 'variant' | 'inverted'>>>`
-  font-size: ${({ componentTheme, variant }): Length => componentTheme.text.sizes[variant]};
-  color: ${({ componentTheme, inverted }): Color => inverted ? componentTheme.text.colors.inverted : componentTheme.text.colors.default};
+const StyledLink = styled.a<Pick<LinkProps, 'variant' | 'inverted'>>`
+  font-size: ${({ variant }): string => get(theme => theme.text.sizes[variant])};
+  color: ${({ inverted }): string => inverted ? get(theme => theme.text.colors.inverted) : get(theme => theme.text.colors.default)};
 `;
 
-const Link: FunctionComponent<LinkProps> = function ({
+const Link: FunctionComponent<LinkProps> = ({
   text,
   variant,
   href,
   inverted
-}): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
-  return (
-    <StyledLink
-      componentTheme={ componentTheme }
-      variant={ variant }
-      href={ href }
-      inverted={ inverted }
-    >
-      { text }
-    </StyledLink>
-  );
-};
+}) => (
+  <StyledLink
+    variant={ variant }
+    href={ href }
+    inverted={ inverted }
+  >
+    { text }
+  </StyledLink>
+);
 
 export {
-  Link,
+  Link
 };

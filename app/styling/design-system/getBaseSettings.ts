@@ -1,4 +1,4 @@
-import { Length } from '../css-in-js/quantities/Length';
+import { Length } from '@nhummel/css-in-js';
 import { GapFunction, getGapFunction } from './getGapFunction';
 import { getSizeFunction, SizeFunction } from './getSizeFuntion';
 
