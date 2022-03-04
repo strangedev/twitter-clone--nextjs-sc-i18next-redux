@@ -1,37 +1,21 @@
-import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../styling/Settings';
+import { createLocalTheme } from '../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { ThemedWith } from '../../../styling/helpers/ThemedWith';
-import { useComponentTheme } from '../../../styling/settingsContext';
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent } from 'react';
 
-const componentThemeFactory =
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
-    return {
-      verticalMargin: settings.size(0.33)
-    };
-  };
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  verticalMargin: globalTheme.gap(1)
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const Spacer = styled.div<ThemedWith<ComponentTheme>>`
-  margin-top: ${lookup('verticalMargin')};
-  margin-bottom: ${lookup('verticalMargin')};
+const Spacer = styled.div`
+  margin-top: ${from(theme => theme.verticalMargin)};
+  margin-bottom: ${from(theme => theme.verticalMargin)};
 `;
 
-const VerticalSpace: FunctionComponent = function ({ children }): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
-  return (
-    <Spacer componentTheme={ componentTheme }>
-      { children }
-    </Spacer>
-  );
-};
+const VerticalSpace: FunctionComponent = ({ children }) => (
+  <Spacer>
+    { children }
+  </Spacer>
+);
 
 export {
   VerticalSpace

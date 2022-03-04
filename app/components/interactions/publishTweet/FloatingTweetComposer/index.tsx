@@ -1,13 +1,8 @@
 import { Button } from '../../../inputs/buttons/Button';
-import { ComponentFactoryArgs } from '../../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../../styling/Settings';
+import { createLocalTheme } from '../../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../../styling/settingsContext';
-import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
-import React, { FunctionComponent, ReactElement } from 'react';
 import { TextArea } from '../../../inputs/textareas/TextArea';
+import React, { FunctionComponent } from 'react';
 
 interface FloatingTweetComposerProps {
   onChange: (text: string) => void;
@@ -15,98 +10,87 @@ interface FloatingTweetComposerProps {
   onPublish: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
-  return {
-    backgroundColor: settings.backgroundColor,
-    border: {
-      color: settings.brandColor,
-      radius: settings.borderRadius,
-      size: settings.borderSize
-    },
-    textColor: settings.textColor,
-    position: {
-      bottom: settings.size(1),
-      right: settings.size(5)
-    },
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  backgroundColor: globalTheme.backgroundColor,
+  border: {
+    color: globalTheme.brandColor,
+    radius: globalTheme.borderRadius,
+    size: globalTheme.borderSize
+  },
+  textColor: globalTheme.textColor,
+  position: {
+    bottom: globalTheme.gap(1),
+    right: globalTheme.gap(1)
+  },
+  size: {
+    width: globalTheme.size(96),
+    height: globalTheme.size(96)
+  },
+  headline: {
     size: {
-      width: settings.size(20),
-      height: settings.size(20)
+      height: globalTheme.size(10),
+      font: globalTheme.textSizes.content
     },
-    headline: {
-      size: {
-        height: settings.size(1),
-        font: settings.textSizes.content
-      },
-      color: {
-        background: settings.brandColor,
-        text: settings.backgroundColor
-      }
-    },
-    footer: {
-      size: {
-        height: settings.size(2)
-      },
-      padding: {
-        horizontal: settings.size(0.33)
-      }
-    },
-    body: {
-      padding: {
-        horizontal: settings.size(0.33),
-        vertical: settings.size(0.33)
-      }
+    color: {
+      background: globalTheme.brandColor,
+      text: globalTheme.backgroundColor
     }
-  };
-};
+  },
+  row: {
+    padding: {
+      horizontal: globalTheme.gap(1),
+      vertical: globalTheme.gap(1)
+    }
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const Container = styled.div<ThemedWith<ComponentTheme>>`
+const Container = styled.div`
   position: fixed;
-  bottom: ${lookup('position.bottom')};
-  right: ${lookup('position.right')};
-  background-color: ${lookup('backgroundColor')};
-  border: ${lookup('border.size')} solid ${lookup('border.color')};
-  border-radius: ${lookup('border.radius')};
-  width: ${lookup('size.width')};
-  height: ${lookup('size.height')};
-  display: grid;
-  grid-template-rows: ${lookup('headline.size.height')} auto ${lookup('footer.size.height')};
-  grid-template-columns: auto auto auto;
-  grid-template-areas:
-    "headline headline headline"
-    "body body body"
-    "footer-left footer-center footer-right";
+  bottom: ${from(theme => theme.position.bottom)};
+  right: ${from(theme => theme.position.right)};
+  background-color: ${from(theme => theme.backgroundColor)};
+  border: ${from(theme => theme.border.size)} solid ${from(theme => theme.border.color)};
+  border-radius: ${from(theme => theme.border.radius)};
+  width: ${from(theme => theme.size.width)};
+  height: ${from(theme => theme.size.height)};
+  display: flex;
+  flex-direction: column;
 `;
 
-const Headline = styled.div<ThemedWith<ComponentTheme>>`
-  grid-area: headline;
-  border-bottom: ${lookup('border.size')} solid ${lookup('border.color')};
-  background-color: ${lookup('headline.color.background')};
-  color: ${lookup('headline.color.text')};
+const Headline = styled.div`
+  height: ${from(theme => theme.headline.size.height)};
+  border-bottom: ${from(theme => theme.border.size)} solid ${from(theme => theme.border.color)};
+  background-color: ${from(theme => theme.headline.color.background)};
+  color: ${from(theme => theme.headline.color.text)};
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${lookup('headline.size.font')};
+  font-size: ${from(theme => theme.headline.size.font)};
 `;
 
-const Body = styled.div<ThemedWith<ComponentTheme>>`
-  grid-area: body;
-  padding: ${lookup('body.padding.vertical')} ${lookup('body.padding.horizontal')};
+const Row = styled.div<{ expand?: boolean }>`
+  padding: ${from(theme => theme.row.padding.vertical)} ${from(theme => theme.row.padding.horizontal)};
+  ${({ expand }): string => expand ? 'flex-grow: 2' : ''}
 `;
 
-const FooterLeft = styled.div<ThemedWith<ComponentTheme>>`
+const Footer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto;
+  grid-template-areas: 'footer-left footer-center footer-right';
+  padding-left: ${from(theme => theme.row.padding.vertical)};
+  padding-right: ${from(theme => theme.row.padding.vertical)};
+  padding-bottom: ${from(theme => theme.row.padding.horizontal)};
+`;
+
+const FooterLeft = styled.div`
   grid-area: footer-left;
-  padding-left: ${lookup('footer.padding.horizontal')};
   display: flex;
   justify-content: flex-start;
   align-items: center;
 `;
 
-const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
-  padding-right: ${lookup('footer.padding.horizontal')};
+const FooterRight = styled.div`
   grid-area: footer-right;
   display: flex;
   justify-content: flex-end;
@@ -114,31 +98,28 @@ const FooterRight = styled.div<ThemedWith<ComponentTheme>>`
 `;
 
 const FloatingTweetComposer: FunctionComponent<FloatingTweetComposerProps> =
-  function ({ onCancel, onChange, onPublish }): ReactElement {
-    const { componentTheme } = useComponentTheme(componentThemeFactory);
+  ({ onCancel, onChange, onPublish }) => (
+    <Container>
+      <Headline>
+        Compose a Twööt
+      </Headline>
 
-    return (
-      <Container componentTheme={ componentTheme }>
-        <Headline componentTheme={ componentTheme }>
-          Compose a Twööt
-        </Headline>
-
-        <Body componentTheme={ componentTheme }>
-          <TextArea
-            placeholder='Write something fun...'
-            onChange={ (text): void => onChange(text) }
-          />
-        </Body>
-
-        <FooterLeft componentTheme={ componentTheme }>
+      <Row expand={ true }>
+        <TextArea
+          placeholder='Write something fun...'
+          onChange={ (text): void => onChange(text) }
+        />
+      </Row>
+      <Footer>
+        <FooterLeft>
           <Button label='Cancel' onClick={ (): void => onCancel() } />
         </FooterLeft>
-        <FooterRight componentTheme={ componentTheme }>
+        <FooterRight>
           <Button label='Publish' onClick={ (): void => onPublish() } />
         </FooterRight>
-      </Container>
-    );
-  };
+      </Footer>
+    </Container>
+  );
 
 export {
   FloatingTweetComposer

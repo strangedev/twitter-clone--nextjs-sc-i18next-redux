@@ -1,72 +1,58 @@
 import { Account as AccountModel } from '../../../domainModel/Account';
-import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../styling/Settings';
+import { createLocalTheme } from '../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../styling/settingsContext';
-import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface AccountProps {
   account?: AccountModel;
 }
 
-const componentThemeFactory =
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
-    return {
-      infoCard: {
-        border: {
-          width: settings.borderSize,
-          radius: settings.borderRadius,
-          color: settings.brandColor
-        },
-        padding: settings.size(0.5),
-        handle: {
-          textSize: settings.textSizes.headline,
-          textColor: settings.brandColor
-        },
-        bio: {
-          textSize: settings.textSizes.content,
-          textColor: settings.textColor,
-          paddingTop: settings.size(0.5)
-        }
-      }
-    };
-  };
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  infoCard: {
+    border: {
+      width: globalTheme.borderSize,
+      radius: globalTheme.borderRadius,
+      color: globalTheme.brandColor
+    },
+    padding: globalTheme.gap(1),
+    handle: {
+      textSize: globalTheme.textSizes.headline,
+      textColor: globalTheme.brandColor
+    },
+    bio: {
+      textSize: globalTheme.textSizes.content,
+      textColor: globalTheme.textColor,
+      paddingTop: globalTheme.gap(1)
+    }
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const InfoCard = styled.div<ThemedWith<ComponentTheme>>`
-  border-radius: ${lookup('infoCard.border.radius')};
-  border-color: ${lookup('infoCard.border.color')};
+const InfoCard = styled.div`
+  border-radius: ${from(theme => theme.infoCard.border.radius)};
+  border-color: ${from(theme => theme.infoCard.border.color)};
   border-style: solid;
-  border-width: ${lookup('infoCard.border.width')};
-  padding: ${lookup('infoCard.padding')};
+  border-width: ${from(theme => theme.infoCard.border.width)};
+  padding: ${from(theme => theme.infoCard.padding)};
 `;
 
-const Handle = styled.div<ThemedWith<ComponentTheme>>`
-  font-size: ${lookup('infoCard.handle.textSize')};
-  color: ${lookup('infoCard.handle.textColor')};
+const Handle = styled.div`
+  font-size: ${from(theme => theme.infoCard.handle.textSize)};
+  color: ${from(theme => theme.infoCard.handle.textColor)};
 `;
 
-const Bio = styled.div<ThemedWith<ComponentTheme>>`
-  font-size: ${lookup('infoCard.bio.textSize')};
-  color: ${lookup('infoCard.bio.textColor')};
-  padding-top: ${lookup('infoCard.bio.paddingTop')};
+const Bio = styled.div`
+  font-size: ${from(theme => theme.infoCard.bio.textSize)};
+  color: ${from(theme => theme.infoCard.bio.textColor)};
+  padding-top: ${from(theme => theme.infoCard.bio.paddingTop)};
 `;
 
 const Account: FunctionComponent<AccountProps> = function ({ account }): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
   return (
-    <InfoCard componentTheme={ componentTheme }>
-      <Handle componentTheme={ componentTheme }>
+    <InfoCard>
+      <Handle>
         { account?.handle }
       </Handle>
-      <Bio componentTheme={ componentTheme }>
+      <Bio>
         { account?.bio }
       </Bio>
     </InfoCard>

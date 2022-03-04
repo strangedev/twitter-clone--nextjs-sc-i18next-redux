@@ -1,346 +1,55 @@
-import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../styling/Settings';
 import styled from 'styled-components';
 import { Tweet as TweetModel } from '../../../domainModel/Tweet';
-import { useComponentTheme } from '../../../styling/settingsContext';
+import { createLocalTheme } from '../../../styling/GlobalTheme';
 import { VerticalSpace } from '../../layout/VerticalSpace';
-import { ThemedWith } from '../../../styling/helpers/ThemedWith';
 import React, { FunctionComponent, ReactElement } from 'react';
 
-const componentThemeFactory =
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
-    return {
-      container: {
-        border: {
-          radius: settings.borderRadius,
-          color: settings.brandColor,
-          width: settings.borderSize
-        },
-        padding: settings.size(0.4)
-      },
-      handle: {
-        textSize: settings.textSizes.content,
-        textColor: settings.brandColor,
-        marginRight: settings.size(0.2)
-      },
-      text: {
-        textSize: settings.textSizes.content,
-        textColor: settings.textColor
-      },
-      publishingDate: {
-        textSize: settings.textSizes.finePrint,
-        textColor: settings.textColor
-      },
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  container: {
+    border: {
+      radius: globalTheme.borderRadius,
+      color: globalTheme.brandColor,
+      width: globalTheme.borderSize
+    },
+    padding: globalTheme.gap(1)
+  },
+  handle: {
+    textSize: globalTheme.textSizes.content,
+    textColor: globalTheme.brandColor,
+    marginRight: globalTheme.gap(1)
+  },
+  text: {
+    textSize: globalTheme.textSizes.content,
+    textColor: globalTheme.textColor
+  },
+  publishingDate: {
+    textSize: globalTheme.textSizes.finePrint,
+    textColor: globalTheme.textColor
+  }
+}));
 
-      // This is to prove the point that the lookup function can construct
-      // the path type for all practical sizes of themes.
-      foo: {
-        container: {
-          border: {
-            radius: settings.borderRadius,
-            color: settings.brandColor,
-            width: settings.borderSize
-          },
-          padding: settings.size(0.4)
-        },
-        handle: {
-          textSize: settings.textSizes.content,
-          textColor: settings.brandColor,
-          marginRight: settings.size(0.2)
-        },
-        text: {
-          textSize: settings.textSizes.content,
-          textColor: settings.textColor
-        },
-        publishingDate: {
-          textSize: settings.textSizes.finePrint,
-          textColor: settings.textColor
-        },
-        foo: {
-          container: {
-            border: {
-              radius: settings.borderRadius,
-              color: settings.brandColor,
-              width: '1px'
-            },
-            padding: settings.size(0.4)
-          },
-          handle: {
-            textSize: settings.textSizes.content,
-            textColor: settings.brandColor,
-            marginRight: settings.size(0.2)
-          },
-          text: {
-            textSize: settings.textSizes.content,
-            textColor: settings.textColor
-          },
-          publishingDate: {
-            textSize: settings.textSizes.finePrint,
-            textColor: settings.textColor
-          },
-          foo: {
-            container: {
-              border: {
-                radius: settings.borderRadius,
-                color: settings.brandColor,
-                width: '1px'
-              },
-              padding: settings.size(0.4)
-            },
-            handle: {
-              textSize: settings.textSizes.content,
-              textColor: settings.brandColor,
-              marginRight: settings.size(0.2)
-            },
-            text: {
-              textSize: settings.textSizes.content,
-              textColor: settings.textColor
-            },
-            publishingDate: {
-              textSize: settings.textSizes.finePrint,
-              textColor: settings.textColor
-            },
-            foo: {
-              container: {
-                border: {
-                  radius: settings.borderRadius,
-                  color: settings.brandColor,
-                  width: '1px'
-                },
-                padding: settings.size(0.4)
-              },
-              handle: {
-                textSize: settings.textSizes.content,
-                textColor: settings.brandColor,
-                marginRight: settings.size(0.2)
-              },
-              text: {
-                textSize: settings.textSizes.content,
-                textColor: settings.textColor
-              },
-              publishingDate: {
-                textSize: settings.textSizes.finePrint,
-                textColor: settings.textColor
-              },
-              foo: {
-                container: {
-                  border: {
-                    radius: settings.borderRadius,
-                    color: settings.brandColor,
-                    width: '1px'
-                  },
-                  padding: settings.size(0.4)
-                },
-                handle: {
-                  textSize: settings.textSizes.content,
-                  textColor: settings.brandColor,
-                  marginRight: settings.size(0.2)
-                },
-                text: {
-                  textSize: settings.textSizes.content,
-                  textColor: settings.textColor
-                },
-                publishingDate: {
-                  textSize: settings.textSizes.finePrint,
-                  textColor: settings.textColor
-                },
-                foo: {
-                  container: {
-                    border: {
-                      radius: settings.borderRadius,
-                      color: settings.brandColor,
-                      width: '1px'
-                    },
-                    padding: settings.size(0.4)
-                  },
-                  handle: {
-                    textSize: settings.textSizes.content,
-                    textColor: settings.brandColor,
-                    marginRight: settings.size(0.2)
-                  },
-                  text: {
-                    textSize: settings.textSizes.content,
-                    textColor: settings.textColor
-                  },
-                  publishingDate: {
-                    textSize: settings.textSizes.finePrint,
-                    textColor: settings.textColor
-                  },
-                  foo: {
-                    container: {
-                      border: {
-                        radius: settings.borderRadius,
-                        color: settings.brandColor,
-                        width: '1px'
-                      },
-                      padding: settings.size(0.4)
-                    },
-                    handle: {
-                      textSize: settings.textSizes.content,
-                      textColor: settings.brandColor,
-                      marginRight: settings.size(0.2)
-                    },
-                    text: {
-                      textSize: settings.textSizes.content,
-                      textColor: settings.textColor
-                    },
-                    publishingDate: {
-                      textSize: settings.textSizes.finePrint,
-                      textColor: settings.textColor
-                    },
-                    foo: {
-                      container: {
-                        border: {
-                          radius: settings.borderRadius,
-                          color: settings.brandColor,
-                          width: '1px'
-                        },
-                        padding: settings.size(0.4)
-                      },
-                      handle: {
-                        textSize: settings.textSizes.content,
-                        textColor: settings.brandColor,
-                        marginRight: settings.size(0.2)
-                      },
-                      text: {
-                        textSize: settings.textSizes.content,
-                        textColor: settings.textColor
-                      },
-                      publishingDate: {
-                        textSize: settings.textSizes.finePrint,
-                        textColor: settings.textColor
-                      },
-                      foo: {
-                        container: {
-                          border: {
-                            radius: settings.borderRadius,
-                            color: settings.brandColor,
-                            width: '1px'
-                          },
-                          padding: settings.size(0.4)
-                        },
-                        handle: {
-                          textSize: settings.textSizes.content,
-                          textColor: settings.brandColor,
-                          marginRight: settings.size(0.2)
-                        },
-                        text: {
-                          textSize: settings.textSizes.content,
-                          textColor: settings.textColor
-                        },
-                        publishingDate: {
-                          textSize: settings.textSizes.finePrint,
-                          textColor: settings.textColor
-                        },
-                        foo: {
-                          container: {
-                            border: {
-                              radius: settings.borderRadius,
-                              color: settings.brandColor,
-                              width: '1px'
-                            },
-                            padding: settings.size(0.4)
-                          },
-                          handle: {
-                            textSize: settings.textSizes.content,
-                            textColor: settings.brandColor,
-                            marginRight: settings.size(0.2)
-                          },
-                          text: {
-                            textSize: settings.textSizes.content,
-                            textColor: settings.textColor
-                          },
-                          publishingDate: {
-                            textSize: settings.textSizes.finePrint,
-                            textColor: settings.textColor
-                          },
-                          foo: {
-                            container: {
-                              border: {
-                                radius: settings.borderRadius,
-                                color: settings.brandColor,
-                                width: '1px'
-                              },
-                              padding: settings.size(0.4)
-                            },
-                            handle: {
-                              textSize: settings.textSizes.content,
-                              textColor: settings.brandColor,
-                              marginRight: settings.size(0.2)
-                            },
-                            text: {
-                              textSize: settings.textSizes.content,
-                              textColor: settings.textColor
-                            },
-                            publishingDate: {
-                              textSize: settings.textSizes.finePrint,
-                              textColor: settings.textColor
-                            },
-                            foo: {
-                              container: {
-                                border: {
-                                  radius: settings.borderRadius,
-                                  color: settings.brandColor,
-                                  width: '1px'
-                                },
-                                padding: settings.size(0.4)
-                              },
-                              handle: {
-                                textSize: settings.textSizes.content,
-                                textColor: settings.brandColor,
-                                marginRight: settings.size(0.2)
-                              },
-                              text: {
-                                textSize: settings.textSizes.content,
-                                textColor: settings.textColor
-                              },
-                              publishingDate: {
-                                textSize: settings.textSizes.finePrint,
-                                textColor: settings.textColor
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    };
-  };
-
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const Container = styled.div<ThemedWith<ComponentTheme>>`
-  padding: ${lookup('container.padding')};
+const Container = styled.div`
+  padding: ${from(theme => theme.container.padding)};
   border-style: solid;
-  border-color: ${lookup('container.border.color')};
-  border-radius: ${lookup('container.border.radius')};
-  border-width: ${lookup('container.border.width')};
+  border-color: ${from(theme => theme.container.border.color)};
+  border-radius: ${from(theme => theme.container.border.radius)};
+  border-width: ${from(theme => theme.container.border.width)};
 `;
 
-const Handle = styled.span<ThemedWith<ComponentTheme>>`
-  color: ${lookup('handle.textColor')};
-  font-size: ${lookup('handle.textSize')};
-  margin-right: ${lookup('handle.marginRight')};
+const Handle = styled.span`
+  color: ${from(theme => theme.handle.textColor)};
+  font-size: ${from(theme => theme.handle.textSize)};
+  margin-right: ${from(theme => theme.handle.marginRight)};
 `;
 
-const PublishingDate = styled.span<ThemedWith<ComponentTheme>>`
-  color: ${lookup('publishingDate.textColor')};
-  font-size: ${lookup('publishingDate.textSize')};
+const PublishingDate = styled.span`
+  color: ${from(theme => theme.publishingDate.textColor)};
+  font-size: ${from(theme => theme.publishingDate.textSize)};
 `;
 
-const Text = styled.span<ThemedWith<ComponentTheme>>`
-  font-size: ${lookup('text.textSize')};
-  color: ${lookup('text.textColor')};
+const Text = styled.span`
+  font-size: ${from(theme => theme.text.textSize)};
+  color: ${from(theme => theme.text.textColor)};
 `;
 
 interface TweetProps {
@@ -348,18 +57,16 @@ interface TweetProps {
 }
 
 const Tweet: FunctionComponent<TweetProps> = function ({ tweet }): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
   return (
-    <Container componentTheme={ componentTheme }>
-      <Handle componentTheme={ componentTheme }>
+    <Container>
+      <Handle>
         { tweet.account.handle }
       </Handle>
-      <PublishingDate componentTheme={ componentTheme }>
+      <PublishingDate>
         on { tweet.publishedAt }
       </PublishingDate>
       <VerticalSpace />
-      <Text componentTheme={ componentTheme }>
+      <Text>
         { tweet.text }
       </Text>
     </Container>

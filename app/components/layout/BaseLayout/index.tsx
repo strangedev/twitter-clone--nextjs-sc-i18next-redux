@@ -1,54 +1,42 @@
-import { ComponentFactoryArgs } from '../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../styling/Settings';
+import { createLocalTheme } from '../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { ThemedWith } from '../../../styling/helpers/ThemedWith';
-import { useComponentTheme } from '../../../styling/settingsContext';
-import React, { Fragment, FunctionComponent, ReactElement } from 'react';
 import { ThemeSwitcher } from '../../interactions/switchTheme/smartComponent/ThemeSwitcher';
+import React, { Fragment, FunctionComponent, ReactElement } from 'react';
 
-const componentThemeFactory =
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  function ({ settings }: ComponentFactoryArgs<Settings>) {
-    return {
-      topBar: {
-        height: settings.size(2.5),
-        textColor: settings.backgroundColor,
-        textSize: settings.textSizes.title,
-        backgroundColor: settings.brandColor,
-        horizontalPadding: settings.size(0.5)
-      },
-      body: {
-        marginTop: settings.size(3),
-        horizontalMargin: settings.size(1)
-      }
-    };
-  };
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  topBar: {
+    height: globalTheme.size(14),
+    textColor: globalTheme.backgroundColor,
+    textSize: globalTheme.textSizes.title,
+    backgroundColor: globalTheme.brandColor,
+    horizontalPadding: globalTheme.gap(1)
+  },
+  body: {
+    marginTop: globalTheme.size(14).add(globalTheme.gap(1)),
+    horizontalMargin: globalTheme.gap(1)
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const TopBar = styled.nav<ThemedWith<ComponentTheme>>`
+const TopBar = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;
-  height: ${lookup('topBar.height')};
-  background-color: ${lookup('topBar.backgroundColor')};
-  color: ${lookup('topBar.textColor')};
-  padding-left: ${lookup('topBar.horizontalPadding')};
-  padding-right: ${lookup('topBar.horizontalPadding')};
-  padding-right: ${lookup('topBar.height')};
+  height: ${from(theme => theme.topBar.height)};
+  background-color: ${from(theme => theme.topBar.backgroundColor)};
+  color: ${from(theme => theme.topBar.textColor)};
+  padding-left: ${from(theme => theme.topBar.horizontalPadding)};
+  padding-right: ${from(theme => theme.topBar.horizontalPadding)};
+  padding-right: ${from(theme => theme.topBar.height)};
   display: flex;
   align-items: baseline;
   flex-wrap: nowrap;
   justify-content: space-between;
 `;
 
-const Body = styled.div<ThemedWith<ComponentTheme>>`
-  margin-top: ${lookup('body.marginTop')};
-  margin-left: ${lookup('body.horizontalMargin')};
-  margin-right: ${lookup('body.horizontalMargin')};
+const Body = styled.div`
+  margin-top: ${from(theme => theme.body.marginTop)};
+  margin-left: ${from(theme => theme.body.horizontalMargin)};
+  margin-right: ${from(theme => theme.body.horizontalMargin)};
 `;
 
 interface BaseLayoutProps {
@@ -60,15 +48,13 @@ const BaseLayout: FunctionComponent<BaseLayoutProps> = function ({
   topBar,
   body
 }): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
   return (
     <Fragment>
-      <TopBar componentTheme={ componentTheme }>
+      <TopBar>
         { topBar }
         <ThemeSwitcher />
       </TopBar>
-      <Body componentTheme={ componentTheme }>
+      <Body>
         { body }
       </Body>
     </Fragment>

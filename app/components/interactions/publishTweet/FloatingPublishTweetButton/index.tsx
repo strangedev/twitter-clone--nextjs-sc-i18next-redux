@@ -1,74 +1,59 @@
-import { ComponentFactoryArgs } from '../../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../../styling/Settings';
+import { createLocalTheme } from '../../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
-import { useComponentTheme } from '../../../../styling/settingsContext';
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent } from 'react';
 
 interface FloatingComposeNewTweetButtonProps {
   onComposeNewTweet: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
-  return {
-    backgroundColor: settings.brandColor,
-    iconColor: settings.backgroundColor,
-    size: settings.size(1),
-    fontSize: settings.textSizes.headline,
-    position: {
-      bottom: settings.size(1),
-      right: settings.size(1)
-    },
-    hover: {
-      yOffset: settings.size(-0.5)
-    },
-    transitionDelay: settings.transition.delay
-  };
-};
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  backgroundColor: globalTheme.brandColor,
+  iconColor: globalTheme.backgroundColor,
+  size: globalTheme.size(20),
+  fontSize: globalTheme.textSizes.title,
+  position: {
+    bottom: globalTheme.gap(1),
+    right: globalTheme.gap(1)
+  },
+  hover: {
+    yOffset: globalTheme.gap(1).neg()
+  },
+  transitionDelay: globalTheme.transition.delay
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const Bubble = styled.button<ThemedWith<ComponentTheme>>`
+const Bubble = styled.button`
   position: fixed;
-  bottom: ${lookup('position.bottom')};
-  right: ${lookup('position.right')};
-  padding: ${lookup('size')};
+  bottom: ${from(theme => theme.position.bottom)};
+  right: ${from(theme => theme.position.right)};
+  width: ${from(theme => theme.size)};
   shape-outside: circle();
   clip-path: circle();
-  font-size: ${lookup('fontSize')};
-  color: ${lookup('iconColor')};
-  background-color: ${lookup('backgroundColor')};
+  font-size: ${from(theme => theme.fontSize)};
+  color: ${from(theme => theme.iconColor)};
+  background-color: ${from(theme => theme.backgroundColor)};
   border: none;
-  transition: all ${lookup('transitionDelay')};
+  transition: all ${from(theme => theme.transitionDelay)};
+  aspect-ratio: 1;
   
   &:hover {
-    transform: translateY(${lookup('hover.yOffset')});
+    transform: translateY(${from(theme => theme.hover.yOffset)});
   }
 `;
 
 const FloatingComposeNewTweetButton: FunctionComponent<FloatingComposeNewTweetButtonProps> =
-  function ({ onComposeNewTweet }): ReactElement {
-    const { componentTheme } = useComponentTheme(componentThemeFactory);
-
-    return (
-      <Bubble
-        componentTheme={ componentTheme }
-        aria-label='Compose a new Twööt'
-        onClick={
-          (event): void => {
-            event.preventDefault();
-            onComposeNewTweet();
-          }
+  ({ onComposeNewTweet }) => (
+    <Bubble
+      aria-label='Compose a new Twööt'
+      onClick={
+        (event): void => {
+          event.preventDefault();
+          onComposeNewTweet();
         }
-      >
-        +
-      </Bubble>
-    );
-  };
+      }
+    >
+      +
+    </Bubble>
+  );
 
 export {
   FloatingComposeNewTweetButton

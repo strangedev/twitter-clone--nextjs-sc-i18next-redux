@@ -1,9 +1,10 @@
 import { AppProps } from 'next/app';
+import { appWithTranslation } from 'next-i18next';
 import { GlobalStyle } from '../app/styling/GlobalStyle';
+import { GlobalThemeProvider } from '../app/styling/GlobalTheme';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { RestoreSession } from '../app/store/adapters/react/RestoreSession';
-import { SettingsProvider } from '../app/styling/settingsContext';
 import { store } from '../app/store/configureStore';
 import React, { ReactElement } from 'react';
 import '../public/fonts/fonts.css';
@@ -20,13 +21,13 @@ const MyApp = function ({ Component, pageProps }: AppProps): ReactElement {
           crossOrigin=''
         />
       </Head>
-      <SettingsProvider>
+      <GlobalThemeProvider>
         <GlobalStyle />
         <RestoreSession />
         <Component { ...pageProps } />
-      </SettingsProvider>
+      </GlobalThemeProvider>
     </Provider>
   );
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

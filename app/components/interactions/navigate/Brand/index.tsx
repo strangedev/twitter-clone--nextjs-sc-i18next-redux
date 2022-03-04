@@ -1,11 +1,6 @@
-import { useRouter } from 'next/router';
-import { ComponentFactoryArgs } from '../../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../../styling/Settings';
+import { createLocalTheme } from '../../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
-import { useComponentTheme } from '../../../../styling/settingsContext';
+import { useRouter } from 'next/router';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 interface LinkProps {
@@ -13,22 +8,18 @@ interface LinkProps {
   href: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
-  return {
-    text: {
-      size: settings.textSizes.title,
-      color: settings.backgroundColor
-    }
-  };
-};
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  text: {
+    size: globalTheme.textSizes.title,
+    color: globalTheme.backgroundColor
+  },
+  rightMargin: globalTheme.gap(1)
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const StyledLink = styled.span<ThemedWith<ComponentTheme>>`
-  font-size: ${lookup('text.size')};
-  color: ${lookup('text.color')};
+const StyledLink = styled.span`
+  font-size: ${from(theme => theme.text.size)};
+  color: ${from(theme => theme.text.color)};
+  margin-right: ${from(theme => theme.rightMargin)};
   text-decoration: none;
   cursor: pointer;
 `;
@@ -37,12 +28,10 @@ const Brand: FunctionComponent<LinkProps> = function ({
   text,
   href
 }): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
   const router = useRouter();
 
   return (
     <StyledLink
-      componentTheme={ componentTheme }
       role='link'
       onClick={
         (): void => {

@@ -99,4 +99,8 @@ npm i react-component-theming
 
 Global styles add the CSS reset and font faces.
 
-### i18next
+### next-i18next
+
+```shell
+npm i next-i18next
+```

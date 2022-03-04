@@ -1,11 +1,6 @@
 import { ButtonContent } from '../ButtonContent/ButtonContent';
-import { ComponentFactoryArgs } from '../../../../styling/helpers/ComponentFactoryArgs';
-import { getThemeLookupFunction } from '../../../../styling/helpers/lookup';
-import { InferComponentThemeOf } from '../../../../styling/helpers/InferComponentThemeOf';
-import { Settings } from '../../../../styling/Settings';
+import { createLocalTheme } from '../../../../styling/GlobalTheme';
 import styled from 'styled-components';
-import { useComponentTheme } from '../../../../styling/settingsContext';
-import { ThemedWith } from '../../../../styling/helpers/ThemedWith';
 import React, { PropsWithChildren, ReactElement } from 'react';
 
 interface ButtonProps<TAdditionalProps> {
@@ -15,48 +10,42 @@ interface ButtonProps<TAdditionalProps> {
   contentProps?: TAdditionalProps;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const componentThemeFactory = function ({ settings }: ComponentFactoryArgs<Settings>) {
-  return {
-    border: {
-      color: settings.brandColor,
-      size: settings.borderSize,
-      radius: settings.borderRadius
-    },
-    backgroundColor: {
-      highlighted: settings.brandColor,
-      default: settings.backgroundColor
-    },
-    text: {
-      size: settings.textSizes.content,
-      color: {
-        highlighted: settings.backgroundColor,
-        default: settings.textColor
-      }
-    },
-    padding: {
-      horizontal: settings.size(0.66),
-      vertical: settings.size(0.33)
+const { from } = createLocalTheme(({ globalTheme }) => ({
+  border: {
+    color: globalTheme.brandColor,
+    size: globalTheme.borderSize,
+    radius: globalTheme.borderRadius
+  },
+  backgroundColor: {
+    highlighted: globalTheme.brandColor,
+    default: globalTheme.backgroundColor
+  },
+  text: {
+    size: globalTheme.textSizes.content,
+    color: {
+      highlighted: globalTheme.backgroundColor,
+      default: globalTheme.textColor
     }
-  };
-};
+  },
+  padding: {
+    horizontal: globalTheme.size(1),
+    vertical: globalTheme.size(1)
+  }
+}));
 
-type ComponentTheme = InferComponentThemeOf<typeof componentThemeFactory>;
-const lookup = getThemeLookupFunction<ComponentTheme>();
-
-const StyledButton = styled.button<ThemedWith<ComponentTheme>>`
-  padding: ${lookup('padding.vertical')} ${lookup('padding.horizontal')};
+const StyledButton = styled.button`
+  padding: ${from(theme => theme.padding.vertical)} ${from(theme => theme.padding.horizontal)};
   border-style: solid;
-  border-width: ${lookup('border.size')};
-  border-color: ${lookup('border.color')};
-  border-radius: ${lookup('border.radius')};
-  font-size: ${lookup('text.size')};
-  color: ${lookup('text.color.default')};
-  background-color: ${lookup('backgroundColor.default')};
+  border-width: ${from(theme => theme.border.size)};
+  border-color: ${from(theme => theme.border.color)};
+  border-radius: ${from(theme => theme.border.radius)};
+  font-size: ${from(theme => theme.text.size)};
+  color: ${from(theme => theme.text.color.default)};
+  background-color: ${from(theme => theme.backgroundColor.default)};
   
   &:hover {
-    color: ${lookup('text.color.highlighted')};
-    background-color: ${lookup('backgroundColor.highlighted')};
+    color: ${from(theme => theme.text.color.highlighted)};
+    background-color: ${from(theme => theme.backgroundColor.highlighted)};
   }
 `;
 
@@ -66,12 +55,9 @@ const Button = function <TAdditionalProps = undefined> ({
   ContentComponent,
   contentProps
 }: PropsWithChildren<ButtonProps<TAdditionalProps>>): ReactElement {
-  const { componentTheme } = useComponentTheme(componentThemeFactory);
-
   if (!ContentComponent) {
     return (
       <StyledButton
-        componentTheme={ componentTheme }
         aria-label={ label }
         onClick={
           (event): void => {
@@ -87,7 +73,6 @@ const Button = function <TAdditionalProps = undefined> ({
 
   return (
     <StyledButton
-      componentTheme={ componentTheme }
       aria-label={ label }
       onClick={
         (event): void => {
